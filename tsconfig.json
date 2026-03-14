@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "editor.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components/Footer", "src/app/(account)/signin", "src/app/(account)/signup"],
+  "exclude": ["node_modules"],
+  "types": ["@types/editorjs__table", "@types/editorjs__embed"]
+
+}

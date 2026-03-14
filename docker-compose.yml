@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  nextjs-frontend:
+    build: .
+    container_name: awol-frontend
+    ports:
+      - "2000:2000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["sh", "./bin/start.sh"]
+    environment:
+      - NODE_ENV=production

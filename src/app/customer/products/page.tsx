@@ -1,0 +1,354 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { X, BatteryCharging, Zap } from "lucide-react"
+import api from "@/src/api"
+
+interface ProductModel {
+  id: number
+  model_name: string
+  cash_price: number
+  installment_price?: number
+  down_payment?: number
+  installment_months: number
+  installment_allowed: boolean
+  image_url?: string
+  features?: Record<string, string>
+}
+
+interface Product {
+  id: number
+  name: string
+  models: ProductModel[]
+}
+
+interface Company {
+  id: number
+  name: string
+  company_type: string
+  products: Product[]
+}
+
+export default function ProductsPage() {
+
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [selected, setSelected] = useState<ProductModel | null>(null)
+  const [searchProduct, setSearchProduct] = useState("")
+  const [searchModel, setSearchModel] = useState("")
+  const [companyFilter, setCompanyFilter] = useState("")
+
+  const [minPrice, setMinPrice] = useState("")
+  const [maxPrice, setMaxPrice] = useState("")
+
+  const [installmentOnly, setInstallmentOnly] = useState(false)
+
+
+  // useEffect(() => {
+
+  //   api.get("v1/customer-awol/companies-products")
+  //     .then(res => res.data)
+  //     .then(data => setCompanies(data))
+  // }, [])
+
+  useEffect(() => {
+
+  const params = new URLSearchParams()
+
+  if (searchProduct) params.append("product", searchProduct)
+  if (searchModel) params.append("model", searchModel)
+  if (companyFilter) params.append("company", companyFilter)
+
+  if (minPrice) params.append("min_price", minPrice)
+  if (maxPrice) params.append("max_price", maxPrice)
+
+  if (installmentOnly) params.append("installment_allowed", "true")
+
+  api.get(`v1/customer-awol/companies-products?${params.toString()}`)
+    .then(res => setCompanies(res.data))
+
+}, [searchProduct, searchModel, companyFilter, minPrice, maxPrice, installmentOnly])
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-gray-200 dark:from-black dark:via-gray-950 dark:to-black text-gray-900 dark:text-white">
+
+      {/* PAGE HEADER */}
+
+      <section className="max-w-7xl mx-auto px-6 pt-24 pb-16 text-center">
+
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-5xl font-bold"
+        >
+          Explore Our Products
+        </motion.h1>
+
+        <p className="mt-4 text-gray-600 dark:text-gray-400">
+          Browse innovative technology from our partner companies.
+          Purchase instantly or through flexible installment plans.
+        </p>
+
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 pb-12">
+
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 grid md:grid-cols-3 gap-4">
+
+          {/* PRODUCT SEARCH */}
+
+          <input
+            placeholder="Search product..."
+            value={searchProduct}
+            onChange={(e)=>setSearchProduct(e.target.value)}
+            className="px-4 py-2 rounded-lg border dark:bg-gray-800"
+          />
+
+          {/* MODEL SEARCH */}
+
+          <input
+            placeholder="Search model..."
+            value={searchModel}
+            onChange={(e)=>setSearchModel(e.target.value)}
+            className="px-4 py-2 rounded-lg border dark:bg-gray-800"
+          />
+
+          {/* COMPANY */}
+
+          <input
+            placeholder="Company..."
+            value={companyFilter}
+            onChange={(e)=>setCompanyFilter(e.target.value)}
+            className="px-4 py-2 rounded-lg border dark:bg-gray-800"
+          />
+
+          {/* PRICE RANGE */}
+
+          <input
+            type="number"
+            placeholder="Min Price"
+            value={minPrice}
+            onChange={(e)=>setMinPrice(e.target.value)}
+            className="px-4 py-2 rounded-lg border dark:bg-gray-800"
+          />
+
+          <input
+            type="number"
+            placeholder="Max Price"
+            value={maxPrice}
+            onChange={(e)=>setMaxPrice(e.target.value)}
+            className="px-4 py-2 rounded-lg border dark:bg-gray-800"
+          />
+
+          {/* INSTALLMENT */}
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={installmentOnly}
+              onChange={(e)=>setInstallmentOnly(e.target.checked)}
+            />
+            Installment Available
+          </label>
+
+        </div>
+      </section>
+
+      {/* COMPANIES */}
+
+      <section className="max-w-7xl mx-auto px-6 pb-20 space-y-16">
+
+        {companies.map((company, i) => (
+
+          <motion.div
+            key={company.id}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * .1 }}
+          >
+
+            {/* COMPANY NAME */}
+
+            <h2 className="text-3xl font-bold mb-8 text-green-500">
+              {company.name}
+            </h2>
+
+
+            {/* PRODUCTS */}
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+              {company.products.map(product =>
+                product.models.map(model => (
+
+                  <motion.div
+                    key={model.id}
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl overflow-hidden cursor-pointer"
+                    onClick={() => setSelected(model)}
+                  >
+
+                    {/* IMAGE */}
+
+                    <div className="h-48 bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                      {model.image_url ? (
+                        <img
+                          src={model.image_url}
+                          className="object-cover h-full w-full"
+                        />
+                      ) : (
+                        <BatteryCharging className="w-12 h-12 text-green-500" />
+                      )}
+                    </div>
+
+
+                    {/* INFO */}
+
+                    <div className="p-6">
+
+                      <h3 className="text-xl font-semibold">
+                        {model.model_name}
+                      </h3>
+
+                      <p className="text-sm text-gray-500 mt-1">
+                        {product.name}
+                      </p>
+
+                      <div className="mt-4 space-y-1">
+
+                        <p className="font-bold text-green-500">
+                          ₦{model.cash_price}
+                        </p>
+
+                        {model.installment_allowed && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            Installment Available
+                          </p>
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </motion.div>
+
+                ))
+              )}
+
+            </div>
+
+          </motion.div>
+
+        ))}
+
+      </section>
+
+
+
+      {/* PRODUCT MODAL */}
+
+      <AnimatePresence>
+
+        {selected && (
+
+          <motion.div
+            className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+
+            <motion.div
+              className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-8 shadow-2xl relative"
+              initial={{ scale: .8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: .8 }}
+            >
+
+              <button
+                className="absolute top-4 right-4"
+                onClick={() => setSelected(null)}
+              >
+                <X />
+              </button>
+
+
+              {/* IMAGE */}
+
+              {selected.image_url && (
+                <img
+                  src={selected.image_url}
+                  className="rounded-xl mb-6"
+                />
+              )}
+
+
+              {/* TITLE */}
+
+              <h2 className="text-2xl font-bold">
+                {selected.model_name}
+              </h2>
+
+
+              {/* PRICE */}
+
+              <div className="mt-4 space-y-2">
+
+                <p className="text-green-500 text-xl font-bold">
+                  Cash Price: ₦{selected.cash_price}
+                </p>
+
+                {selected.installment_allowed && (
+                  <>
+                    <p>
+                      Installment Price: ₦{selected.installment_price}
+                    </p>
+
+                    <p>
+                      Down Payment: ₦{selected.down_payment}
+                    </p>
+
+                    <p>
+                      Duration: {selected.installment_months} months
+                    </p>
+                  </>
+                )}
+
+              </div>
+
+
+              {/* FEATURES */}
+
+              {selected.features && (
+
+                <div className="mt-6">
+
+                  <h3 className="font-semibold mb-3">
+                    Features
+                  </h3>
+
+                  <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+
+                    {Object.entries(selected.features).map(([k, v]) => (
+                      <li key={k}>
+                        <strong>{k}:</strong> {v}
+                      </li>
+                    ))}
+
+                  </ul>
+
+                </div>
+
+              )}
+
+            </motion.div>
+
+          </motion.div>
+
+        )}
+
+      </AnimatePresence>
+
+    </main>
+  )
+}

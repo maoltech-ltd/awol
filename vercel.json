@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://naijup.ng/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.naijup.ng"
+        }
+      ],
+      "permanent": true
+    }
+  ]
+}
