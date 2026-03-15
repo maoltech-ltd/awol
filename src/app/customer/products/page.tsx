@@ -12,8 +12,12 @@ interface ProductModel {
   installment_price?: number
   down_payment?: number
   installment_months: number
-  installment_allowed: boolean
-  image_url?: string
+  installment_allowed: Boolean
+  default_image: string
+  other_images?: string[]
+  stock_quantity: number
+  is_available: boolean
+  is_featured: boolean
   features?: Record<string, string>
 }
 
@@ -31,8 +35,7 @@ interface Company {
 }
 
 export default function ProductsPage() {
-
-  const [companies, setCompanies] = useState<Company[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const [selected, setSelected] = useState<ProductModel | null>(null)
   const [searchProduct, setSearchProduct] = useState("")
   const [searchModel, setSearchModel] = useState("")
@@ -53,19 +56,27 @@ export default function ProductsPage() {
 
   useEffect(() => {
 
-  const params = new URLSearchParams()
+    const params = new URLSearchParams()
 
-  if (searchProduct) params.append("product", searchProduct)
-  if (searchModel) params.append("model", searchModel)
-  if (companyFilter) params.append("company", companyFilter)
+    if (searchProduct) params.append("product", searchProduct)
+    if (searchModel) params.append("model", searchModel)
+    if (companyFilter) params.append("company", companyFilter)
 
-  if (minPrice) params.append("min_price", minPrice)
-  if (maxPrice) params.append("max_price", maxPrice)
+    if (minPrice) params.append("min_price", minPrice)
+    if (maxPrice) params.append("max_price", maxPrice)
 
-  if (installmentOnly) params.append("installment_allowed", "true")
+    if (installmentOnly) params.append("installment_allowed", "true")
 
-  api.get(`v1/customer-awol/companies-products?${params.toString()}`)
-    .then(res => setCompanies(res.data))
+    api.get(`v1/customer-awol/companies-products?${params.toString()}`)
+      .then(res => {
+
+        const companies: Company[] = res.data
+
+        const flattenedProducts = companies.flatMap(company => company.products)
+
+        setProducts(flattenedProducts)
+
+      })
 
 }, [searchProduct, searchModel, companyFilter, minPrice, maxPrice, installmentOnly])
 
@@ -158,28 +169,22 @@ export default function ProductsPage() {
 
       <section className="max-w-7xl mx-auto px-6 pb-20 space-y-16">
 
-        {companies.map((company, i) => (
+        {products.map((product, i) => (
 
           <motion.div
-            key={company.id}
+            key={product.id}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * .1 }}
           >
 
-            {/* COMPANY NAME */}
-
-            <h2 className="text-3xl font-bold mb-8 text-green-500">
-              {company.name}
-            </h2>
 
 
             {/* PRODUCTS */}
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-              {company.products.map(product =>
-                product.models.map(model => (
+              {product.models.map(model => (
 
                   <motion.div
                     key={model.id}
@@ -191,9 +196,9 @@ export default function ProductsPage() {
                     {/* IMAGE */}
 
                     <div className="h-48 bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
-                      {model.image_url ? (
+                      {model.default_image ? (
                         <img
-                          src={model.image_url}
+                          src={model.default_image}
                           className="object-cover h-full w-full"
                         />
                       ) : (
@@ -233,7 +238,7 @@ export default function ProductsPage() {
                   </motion.div>
 
                 ))
-              )}
+              }
 
             </div>
 
@@ -275,9 +280,9 @@ export default function ProductsPage() {
 
               {/* IMAGE */}
 
-              {selected.image_url && (
+              {selected.default_image && (
                 <img
-                  src={selected.image_url}
+                  src={selected.default_image}
                   className="rounded-xl mb-6"
                 />
               )}
