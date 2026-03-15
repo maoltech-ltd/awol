@@ -34,18 +34,17 @@ const manrope = localFont({
 const jsonLdOrganization = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Naijup",
-  url: "https://naijup.ng",
-  logo: "https://naijup.ng/image/naijup-logo.png",
-  sameAs: ["https://x.com/official_naijup", "https://facebook.com/naijup"],
+  name: "Awol",
+  url: "https://awol.naijup.ng",
+  logo: "https://naijup.ng/image/awol-logo.png",
+  sameAs: ["https://x.com/awol", "https://facebook.com/awol"],
 };
 
 const jsonLdBreadcrumb = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://naijup.ng" },
-    { "@type": "ListItem", position: 2, name: "Blog", item: "https://naijup.ng/blog" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://awol.naijup.ng" },
   ],
 };
 
@@ -58,7 +57,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/image/favicon.ico", 
     shortcut: "/image/favicon.ico",
-    apple: "/image/naijup-logo.png" 
+    apple: "/image/awol-logo.png" 
   },
   description: siteMetadata.description,
   openGraph: {

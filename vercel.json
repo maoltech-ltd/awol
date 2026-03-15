@@ -2,11 +2,11 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "destination": "https://naijup.ng/$1",
+      "destination": "https://awol.naijup.ng/$1",
       "has": [
         {
           "type": "host",
-          "value": "www.naijup.ng"
+          "value": "www.awol.naijup.ng"
         }
       ],
       "permanent": true

@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://naijup.ng/sitemap.xml",
+    sitemap: "https://awol.naijup.ng/sitemap.xml",
   };
 }

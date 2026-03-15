@@ -35,14 +35,14 @@ const Contact = () => {
             <ul className="mt-2 text-base md:text-lg space-y-2">
             <li>
                 Twitter/X:{" "}
-                <a href="https://x.com/official_naijup" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
-                @official_naijup
+                <a href="https://x.com/awol" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                @awol
                 </a>
             </li>
             <li>
                 Instagram:{" "}
-                <a href="https://instagram.com/official_naijup" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
-                @official_naijup
+                <a href="https://instagram.com/awol" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                @awol
                 </a>
             </li>
             </ul>

@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://naijup.ng";
+  const baseUrl = "https://awol.naijup.ng";
 
   let blogs: any[] = [];
   let categories: any[] = [];
