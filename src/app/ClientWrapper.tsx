@@ -6,6 +6,7 @@ import ReduxProvider from "../redux/ReduxProvider";
 import Script from "next/script";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Sidebar from "../components/SideBar";
 
 export default function ClientWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,6 +25,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
       </Script>
 
       {shouldShowHeaderFooter && <Header />}
+      {shouldShowHeaderFooter && <Sidebar />}
       {children}
       {shouldShowHeaderFooter && <Footer />}
     </ReduxProvider>

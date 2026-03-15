@@ -36,7 +36,7 @@ const jsonLdOrganization = {
   "@type": "Organization",
   name: "Awol",
   url: "https://awol.naijup.ng",
-  logo: "https://naijup.ng/image/awol-logo.png",
+  logo: "https://awol.naijup.ng/image/awol-logo.png",
   sameAs: ["https://x.com/awol", "https://facebook.com/awol"],
 };
 
@@ -107,27 +107,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
         />
-          {/* Google Adsense */}
-          <Script
-            id="google-adsense"
-            strategy="afterInteractive"
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9335680421453806"
-            crossOrigin="anonymous"
-          />
-
-          {/* Google Analytics */}
-    
-
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=AW-933643807" strategy="afterInteractive" crossOrigin="anonymous"></Script>
-        <Script id="google-analytics" strategy="afterInteractive" crossOrigin="anonymous">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'AW-933643807');
-          `}
-        </Script>
       </head>
       <body
         className={`${inter.variable} ${manrope.variable} font-mr bg-light dark:bg-dark`}

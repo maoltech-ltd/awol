@@ -38,7 +38,7 @@ const SignIn = () => {
                 setSuccessModalOpen(true);
                 setTimeout(() => {
                     setSuccessModalOpen(false);
-                    router.push("/");
+                    router.push("/dashboard");
                 }, 2000);
             })
             .catch((error: any) => {
