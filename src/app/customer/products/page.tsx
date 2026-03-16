@@ -215,11 +215,11 @@ export default function ProductsPage() {
 
                     <div className="p-6">
 
-                      <h3 className="text-xl font-semibold">
+                      <h3 className="text-xl font-semibold dark:text-dark">
                         {model.model_name}
                       </h3>
 
-                      <p className="text-sm text-gray-500 mt-1">
+                      <p className="text-sm text-gray-500 mt-1 dark:text-dark">
                         {product.name}
                       </p>
 
@@ -230,7 +230,7 @@ export default function ProductsPage() {
                         </p>
 
                         {model.installment_allowed && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-sm text-gray-600 dark:text-dark">
                             Installment Available
                           </p>
                         )}
@@ -275,7 +275,7 @@ export default function ProductsPage() {
             >
 
               <button
-                className="absolute top-4 right-4"
+                className="absolute top-4 right-4 dark:text-dark"
                 onClick={() => setSelected(null)}
               >
                 <X />
@@ -298,14 +298,14 @@ export default function ProductsPage() {
 
               {/* TITLE */}
 
-              <h2 className="text-2xl font-bold">
+              <h2 className="text-2xl font-bold dark:text-dark">
                 {selected.model_name}
               </h2>
 
 
               {/* PRICE */}
 
-              <div className="mt-4 space-y-2">
+              <div className="mt-4 space-y-2 dark:text-dark">
 
                 <p className="text-green-500 text-xl font-bold">
                   Cash Price: ₦{selected.cash_price}
@@ -340,7 +340,7 @@ export default function ProductsPage() {
                     Features
                   </h3>
 
-                  <ul className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                  <ul className="space-y-1 text-sm text-gray-600 dark:text-dark">
 
                     {Object.entries(selected.features).map(([k, v]) => (
                       <li key={k}>
