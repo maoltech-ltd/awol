@@ -51,6 +51,7 @@ export default function PaymentsPage() {
     maxAmount,
     fromDate,
     toDate,
+    dispatch
   ]);
 
   const currency = new Intl.NumberFormat("en-NG", {

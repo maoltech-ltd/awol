@@ -17,7 +17,7 @@ export default function ProductsClient({ page }: { page: number }) {
   useEffect(() => {
     if (!user?.token) return;
     dispatch(fetchProducts({ token: user.token, page }));
-  }, [user?.token, page]);
+  }, [user?.token, page, dispatch]);
 
   if (!mounted) return null;
   if (!user?.token) return <div className="p-6">Please login</div>;

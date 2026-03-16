@@ -18,7 +18,7 @@ export default function CompaniesClient({ search, page }: { search: string; page
   useEffect(() => {
     if (!user?.token) return;
     dispatch(fetchCompanies({ token: user.token, search, page }));
-  }, [user?.token, search, page]);
+  }, [user?.token, search, page, dispatch]);
 
   if (!mounted) return null;
 

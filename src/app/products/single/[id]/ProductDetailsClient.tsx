@@ -17,7 +17,7 @@ export default function ProductDetailsClient({ id }: { id: string }) {
   useEffect(() => {
     if (!user?.token) return;
     dispatch(fetchProductDetails({ token: user.token, id }));
-  }, [user?.token, id]);
+  }, [user?.token, id, dispatch]);
 
   if (!mounted) return null;
 

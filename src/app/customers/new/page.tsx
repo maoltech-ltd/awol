@@ -174,7 +174,7 @@ export default function NewContract() {
   useEffect(() => {
     if (!user?.token) return;
     dispatch(fetchProducts({ token: user.token }));
-  }, [user?.token]);
+  }, [user?.token, dispatch]);
 
   // LOAD MODELS
   useEffect(() => {
@@ -182,7 +182,7 @@ export default function NewContract() {
     dispatch(
       fetchProductDetails({ token: user.token, id: selectedProduct })
     );
-  }, [selectedProduct]);
+  }, [user?.token,selectedProduct, dispatch]);
 
   // When model changes → auto-set correct price
   useEffect(() => {

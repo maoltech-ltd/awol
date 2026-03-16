@@ -17,7 +17,7 @@ const user = useSelector((state: RootState) => state.user);
 useEffect(() => {
     if (!user?.token) return;
     dispatch(fetchCustomers({ token: user.token, page }));
-}, [user?.token, page]);
+}, [user?.token, page, dispatch]);
 
 if (status === "loading") return <div className="p-6">Loading...</div>;
 

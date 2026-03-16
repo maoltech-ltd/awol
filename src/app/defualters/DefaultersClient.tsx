@@ -14,7 +14,7 @@ export default function DefaultersClient() {
   useEffect(() => {
     if (!user?.token) return;
     dispatch(fetchDefaults({ token: user.token, page: 1 }));
-  }, [user?.token]);
+  }, [user?.token, dispatch]);
 
   if (!user?.token) return <div className="p-6">Please login</div>;
   if (status === "loading") return <div className="p-6">Loading...</div>;

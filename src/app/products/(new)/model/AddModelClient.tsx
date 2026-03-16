@@ -347,7 +347,7 @@ export default function AddModelClient() {
     if (token) {
       dispatch(fetchProducts({ token, page: 1 }));
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   const filteredProducts = products.filter((p: Product) =>
     p.name.toLowerCase().includes(search.toLowerCase())

@@ -14,7 +14,7 @@ export default function CustomerDetailsClient({ id }: { id: string }) {
     useEffect(() => {
         if (!user?.token) return;
         dispatch(fetchCustomerDetails({ token: user.token, id }));
-    }, [user?.token, id]);
+    }, [user?.token, id, dispatch]);
 
     if (status === "loading") return <div className="p-6">Loading...</div>;
     if (!customer) return <div className="p-6">Customer not found</div>;

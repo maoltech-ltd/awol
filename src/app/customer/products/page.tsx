@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, BatteryCharging, Zap } from "lucide-react"
+import Image from "next/image"
 import api from "@/src/api"
 
 interface ProductModel {
@@ -197,9 +198,12 @@ export default function ProductsPage() {
 
                     <div className="h-48 bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
                       {model.default_image ? (
-                        <img
+                        <Image
                           src={model.default_image}
-                          className="object-cover h-full w-full"
+                          alt={model.model_name}
+                          className="object-cover"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       ) : (
                         <BatteryCharging className="w-12 h-12 text-green-500" />
@@ -281,9 +285,13 @@ export default function ProductsPage() {
               {/* IMAGE */}
 
               {selected.default_image && (
-                <img
+                <Image
                   src={selected.default_image}
+                  alt={selected.model_name}
                   className="rounded-xl mb-6"
+                  width={400}
+                  height={300}
+                  sizes="(max-width: 768px) 100vw, 400px"
                 />
               )}
 
