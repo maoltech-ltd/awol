@@ -42,18 +42,15 @@ export default function ProductsPage() {
   const [searchModel, setSearchModel] = useState("")
   const [companyFilter, setCompanyFilter] = useState("")
 
+
   const [minPrice, setMinPrice] = useState("")
   const [maxPrice, setMaxPrice] = useState("")
 
   const [installmentOnly, setInstallmentOnly] = useState(false)
+  const [page, setPage] = useState(1)
+  const [hasNext, setHasNext] = useState(false)
+  const [hasPrev, setHasPrev] = useState(false)
 
-
-  // useEffect(() => {
-
-  //   api.get("v1/customer-awol/companies-products")
-  //     .then(res => res.data)
-  //     .then(data => setCompanies(data))
-  // }, [])
 
   useEffect(() => {
 
@@ -67,18 +64,25 @@ export default function ProductsPage() {
     if (maxPrice) params.append("max_price", maxPrice)
 
     if (installmentOnly) params.append("installment_allowed", "true")
+    params.append("page", String(page))
+    params.append("page_size", "20")
 
     api.get(`v1/customer-awol/companies-products?${params.toString()}`)
       .then(res => {
-
+        
         const companies: Company[] = res.data
 
-        const flattenedProducts = companies.flatMap(company => company.products)
+        // setHasNext(!!companies?.next)
+        // setHasPrev(!!companies?.previous)
 
-        setProducts(flattenedProducts)
+        setProducts(companies.flatMap(company => company.products))
 
       })
 
+}, [searchProduct, searchModel, companyFilter, minPrice, maxPrice, installmentOnly, page])
+
+useEffect(() => {
+  setPage(1)
 }, [searchProduct, searchModel, companyFilter, minPrice, maxPrice, installmentOnly])
 
   return (
@@ -105,26 +109,28 @@ export default function ProductsPage() {
 
       <section className="max-w-7xl mx-auto px-6 pb-12">
 
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 grid md:grid-cols-3 gap-4">
+        <div className="bg-white dark:bg-gray-900 shadow-md dark:shadow-[0_8px_30px_rgba(0,0,0,0.6)] rounded-xl p-6 grid md:grid-cols-3 gap-4">
 
           {/* PRODUCT SEARCH */}
 
-          <input
+          <motion.input
+            whileFocus={{ scale: 1.05 }}
+            whileHover={{ scale: 1.02 }}
             placeholder="Search product..."
             value={searchProduct}
             onChange={(e)=>setSearchProduct(e.target.value)}
-            className="px-4 py-2 rounded-lg border dark:bg-gray-800"
+            className="px-4 py-2 rounded-lg dark:bg-gray-800 shadow-inner outline-none"
           />
 
           {/* MODEL SEARCH */}
-
-          <input
+          <motion.input
+            whileFocus={{ scale: 1.05 }}
+            whileHover={{ scale: 1.02 }}
             placeholder="Search model..."
             value={searchModel}
             onChange={(e)=>setSearchModel(e.target.value)}
-            className="px-4 py-2 rounded-lg border dark:bg-gray-800"
+            className="px-4 py-2 rounded-lg dark:bg-gray-800 shadow-inner outline-none"
           />
-
           {/* COMPANY */}
 
           <input
@@ -179,8 +185,6 @@ export default function ProductsPage() {
             transition={{ delay: i * .1 }}
           >
 
-
-
             {/* PRODUCTS */}
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -190,7 +194,7 @@ export default function ProductsPage() {
                   <motion.div
                     key={model.id}
                     whileHover={{ scale: 1.05 }}
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl overflow-hidden cursor-pointer"
+                    className="bg-white dark:bg-gray-900 shadow-md dark:shadow-[0_8px_30px_rgba(0,0,0,0.6)] rounded-2xl shadow-xl overflow-hidden cursor-pointer"
                     onClick={() => setSelected(model)}
                   >
 
@@ -252,11 +256,10 @@ export default function ProductsPage() {
 
       </section>
 
-
-
       {/* PRODUCT MODAL */}
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
+        
 
         {selected && (
 
@@ -359,7 +362,27 @@ export default function ProductsPage() {
           </motion.div>
 
         )}
+      <div className="flex justify-center items-center gap-4 mt-10">
 
+        <button
+          disabled={!hasPrev}
+          onClick={() => setPage(p => p - 1)}
+          className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 
+          shadow hover:scale-105 transition disabled:opacity-40"
+        >
+          Prev
+        </button>
+
+        <button
+          disabled={!hasNext}
+          onClick={() => setPage(p => p + 1)}
+          className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 
+          shadow hover:scale-105 transition disabled:opacity-40"
+        >
+          Next
+        </button>
+
+      </div>
       </AnimatePresence>
 
     </main>

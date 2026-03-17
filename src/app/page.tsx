@@ -290,7 +290,7 @@ export default function LandingPage() {
 
               <button
                 onClick={closeModal}
-                className="absolute top-4 right-4"
+                className="absolute top-4 right-4 dark:text-dark"
               >
                 <X />
               </button>
@@ -298,11 +298,11 @@ export default function LandingPage() {
 
               {modal === "company" && (
                 <>
-                  <h3 className="text-2xl font-bold">
+                  <h3 className="text-2xl font-bold dark:text-dark">
                     About AWOL
                   </h3>
 
-                  <p className="mt-4 text-gray-600 dark:text-gray-400">
+                  <p className="mt-4 text-gray-600 dark:text-dark">
                     AWOL is a technology-driven company focused on delivering
                     innovative solutions in renewable energy, electric
                     mobility, and smart electronics. Our mission is to make
@@ -315,14 +315,12 @@ export default function LandingPage() {
 
               {modal === "models" && (
                 <>
-                  <h3 className="text-2xl font-bold">
+                  <h3 className="text-2xl font-bold dark:text-dark">
                     Installment Packages
                   </h3>
 
-                  <p className="mt-4 text-gray-600 dark:text-gray-400">
-                    Packages and models from the database can be displayed
-                    here dynamically. Customers can explore payment plans,
-                    durations and monthly costs.
+                  <p className="mt-4 text-gray-600 dark:text-dark">
+                    Coming soon
                   </p>
                 </>
               )}

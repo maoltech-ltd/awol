@@ -58,7 +58,7 @@ const Logo = ({ user }: any) => {
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-bold text-lg md:text-xl"
+        className="font-bold text-lg text-green-600 md:text-xl"
       >
         {user?.username || "Awol"}
       </motion.span>
