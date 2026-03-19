@@ -130,7 +130,7 @@ export default function CompaniesClient({ search, page }: { search: string; page
             className="p-5 rounded-2xl bg-white dark:bg-gray-900 shadow hover:shadow-xl transition flex justify-between items-center"
           >
             <div>
-              <h2 className="font-semibold text-lg text-gray-800 dark:text-white">
+              <h2 className="font-semibold text-lg text-gray-800">
                 {c.name}
               </h2>
               <p className="text-sm text-gray-500">{c.company_type}</p>
