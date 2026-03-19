@@ -9,18 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@editorjs/checklist": "^1.6.0",
-    "@editorjs/code": "^2.9.0",
-    "@editorjs/editorjs": "^2.29.1",
-    "@editorjs/embed": "^2.7.1",
-    "@editorjs/header": "^2.8.1",
-    "@editorjs/image": "^2.9.3",
-    "@editorjs/inline-code": "^1.5.0",
-    "@editorjs/link": "^2.6.2",
-    "@editorjs/list": "^1.9.0",
-    "@editorjs/quote": "^2.6.0",
-    "@editorjs/raw": "^2.5.0",
-    "@editorjs/table": "^2.3.0",
     "@headlessui/react": "^2.1.2",
     "@hookform/resolvers": "^3.9.0",
     "@nextui-org/react": "^2.3.6",
@@ -49,7 +37,6 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@types/editorjs__header": "^2.6.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
