@@ -180,7 +180,7 @@ export default function LandingPage() {
             </motion.div>
 
 
-            <motion.div
+            {/* <motion.div
               whileHover={{ scale: 1.05 }}
               className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
             >
@@ -199,6 +199,25 @@ export default function LandingPage() {
               >
                 View Packages
               </button>
+            </motion.div> */}
+
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
+            >
+              <h3 className="text-2xl font-bold dark:text-white">
+                Solar Power Calculator
+              </h3>
+
+              <p className="mt-4 text-gray-600 dark:text-gray-300">
+                Estimate the battery and solar panel power you need for your home appliances.
+                Choose items like TV, fan, fridge, laptop, and more, then calculate required
+                energy to match your desired backup duration.
+              </p>
+
+              <Link href="/customer/solar/calculator" className="inline-block mt-6 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                Go to Solar Calculator
+              </Link>
             </motion.div>
 
           </div>

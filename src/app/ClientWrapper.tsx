@@ -49,7 +49,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const excludePaths = ["/signin", "/signup", "/"];
-  const excludePathsSidebar = ["/signin", "/signup", "/", "/customer/products"];
+  const excludePathsSidebar = ["/signin", "/signup", "/", "/customer/products", "/customer/solar/calculator"];
 
   const showHeaderFooter = !excludePaths.includes(pathname);
   const showSidebar = !excludePathsSidebar.includes(pathname);
