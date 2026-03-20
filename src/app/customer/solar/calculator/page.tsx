@@ -13,6 +13,16 @@ const appliancesList = [
   { name: "Hot Plate", watts: 1200 },
   { name: "Light Bulb", watts: 10 },
   { name: "Phone Charger", watts: 10 },
+  { name: "Pumping Machine (0.5HP)", watts: 500, surgeWatts: 1500 },
+  { name: "Pumping Machine (1.0HP)", watts: 1100, surgeWatts: 3300 },
+  { name: "Pumping Machine (1.5HP)", watts: 1500, surgeWatts: 4500 },
+  { name: "Electric Iron", watts: 1200 },
+  { name: "Electric Kettle", watts: 2000 },
+  { name: "Standing Fan", watts: 50 },
+  { name: "Microwave", watts: 1000 },
+  { name: "Blender", watts: 500},
+  { name: "CCTV System", watts: 50},
+  { name: "Wi-Fi Router", watts: 15}
 ];
 
 export default function SolarCalculator() {
@@ -110,9 +120,13 @@ export default function SolarCalculator() {
           className="input-green"
         >
           <option value={1}>1 Hour</option>
+          <option value={2}>2 Hours</option>
+          <option value={3}>3 Hours</option>
+          <option value={4}>4 Hours</option>
           <option value={5}>5 Hours</option>
           <option value={8}>Overnight (8h)</option>
           <option value={24}>24 Hours</option>
+          <option value={48}>2 days</option>
         </select>
       </div>
 

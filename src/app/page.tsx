@@ -205,11 +205,11 @@ export default function LandingPage() {
               whileHover={{ scale: 1.05 }}
               className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
             >
-              <h3 className="text-2xl font-bold dark:text-white">
+              <h3 className="text-2xl font-bold dark:text-dark">
                 Solar Power Calculator
               </h3>
 
-              <p className="mt-4 text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-gray-600 dark:text-dark">
                 Estimate the battery and solar panel power you need for your home appliances.
                 Choose items like TV, fan, fridge, laptop, and more, then calculate required
                 energy to match your desired backup duration.
