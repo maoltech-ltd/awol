@@ -200,17 +200,24 @@ useEffect(() => {
 
                     {/* IMAGE */}
 
-                    <div className="h-48 bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                    {/* <div className="h-48 bg-gray-200 dark:bg-gray-800 flex items-center justify-center"> */}
+                    {/* <div className="relative h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden"> */}
+                    <div className="relative aspect-[4/3] bg-gray-200 dark:bg-gray-800 overflow-hidden">
                       {model.default_image ? (
                         <Image
                           src={model.default_image}
                           alt={model.model_name}
                           className="object-cover"
                           fill
-                          sizes="(max-width: 768px) 100vw, 33vw"
+                          placeholder="blur"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          priority={false}
                         />
                       ) : (
-                        <BatteryCharging className="w-12 h-12 text-green-500" />
+                        // <BatteryCharging className="w-12 h-12 text-green-500" />
+                        <div className="flex items-center justify-center h-full">
+                          <BatteryCharging className="w-12 h-12 text-green-500" />
+                        </div>
                       )}
                     </div>
 
