@@ -298,7 +298,8 @@ useEffect(() => {
                 <Image
                   src={selected.default_image}
                   alt={selected.model_name}
-                  className="rounded-xl mb-6"
+                  // className="rounded-xl mb-6"
+                  className="rounded-xl mb-6 object-cover"
                   width={400}
                   height={300}
                   sizes="(max-width: 768px) 100vw, 400px"
