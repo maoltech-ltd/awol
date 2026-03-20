@@ -74,7 +74,7 @@ export default function AddModelClient() {
     try {
       setDefaultPreview(URL.createObjectURL(file));
       const result = await dispatch(createImage(file)).unwrap();
-      setDefaultImage(result.url);
+      setDefaultImage(result.image);
     } catch {
       setError("Image upload failed");
     }
@@ -91,7 +91,7 @@ export default function AddModelClient() {
       const result = await dispatch(createImage(file)).unwrap();
 
       const imgCopy = [...otherImages];
-      imgCopy[index] = result.url;
+      imgCopy[index] = result.image;
       setOtherImages(imgCopy);
     } catch {
       setError("Image upload failed");

@@ -99,7 +99,7 @@ export default function UpdateModel() {
       setDefaultPreview(URL.createObjectURL(file));
       const res = await dispatch(createImage(file)).unwrap();
 
-      setForm({ ...form, default_image: res.url });
+      setForm({ ...form, default_image: res.image });
     } catch {
       setError("Image upload failed");
     }
