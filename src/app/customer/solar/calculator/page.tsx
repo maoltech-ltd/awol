@@ -140,7 +140,7 @@ export default function SolarCalculator() {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                {/* <div className="grid grid-cols-2 gap-3">
                   <input
                     type="number"
                     value={item.qty}
@@ -160,6 +160,43 @@ export default function SolarCalculator() {
                     className="input-green"
                     placeholder="Hours"
                   />
+                </div> */}
+                <div className="grid grid-cols-2 gap-3">
+
+                  {/* QUANTITY */}
+                  <div className="flex flex-col">
+                    <label className="text-xs text-gray-500 mb-1">
+                      Quantity
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={item.qty}
+                      onChange={(e) =>
+                        updateItem(item.name, "qty", Number(e.target.value))
+                      }
+                      className="input-green"
+                      placeholder="e.g 2"
+                    />
+                  </div>
+
+                  {/* HOURS */}
+                  <div className="flex flex-col">
+                    <label className="text-xs text-gray-500 mb-1">
+                      Hours / day
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={item.hours}
+                      onChange={(e) =>
+                        updateItem(item.name, "hours", Number(e.target.value))
+                      }
+                      className="input-green"
+                      placeholder="e.g 5"
+                    />
+                  </div>
+
                 </div>
               </motion.div>
             ))}
@@ -175,9 +212,14 @@ export default function SolarCalculator() {
                 onChange={(e) => setBackupHours(Number(e.target.value))}
                 className="input-green"
               >
-                <option value={4}>4 Hours</option>
-                <option value={8}>8 Hours</option>
-                <option value={24}>24 Hours</option>
+                <option value={1}>1 Hour</option> 
+                <option value={2}>2 Hours</option> 
+                <option value={3}>3 Hours</option> 
+                <option value={4}>4 Hours</option> 
+                <option value={5}>5 Hours</option> 
+                <option value={8}>Overnight (8h)</option> 
+                <option value={24}>24 Hours</option> 
+                <option value={48}>2 days</option>
               </select>
             </div>
 
