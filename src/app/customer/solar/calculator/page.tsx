@@ -1,7 +1,10 @@
+// 
+
 "use client";
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { X } from "lucide-react";
 
 const appliancesList = [
   { name: "TV", watts: 100 },
@@ -13,39 +16,53 @@ const appliancesList = [
   { name: "Hot Plate", watts: 1200 },
   { name: "Light Bulb", watts: 10 },
   { name: "Phone Charger", watts: 10 },
-  { name: "Pumping Machine (0.5HP)", watts: 500, surgeWatts: 1500 },
-  { name: "Pumping Machine (1.0HP)", watts: 1100, surgeWatts: 3300 },
-  { name: "Pumping Machine (1.5HP)", watts: 1500, surgeWatts: 4500 },
+  { name: "Pumping Machine (0.5HP)", watts: 500 },
+  { name: "Pumping Machine (1.0HP)", watts: 1100 },
+  { name: "Pumping Machine (1.5HP)", watts: 1500 },
   { name: "Electric Iron", watts: 1200 },
   { name: "Electric Kettle", watts: 2000 },
   { name: "Standing Fan", watts: 50 },
   { name: "Microwave", watts: 1000 },
-  { name: "Blender", watts: 500},
-  { name: "CCTV System", watts: 50},
-  { name: "Wi-Fi Router", watts: 15}
+  { name: "Blender", watts: 500 },
+  { name: "CCTV System", watts: 50 },
+  { name: "Wi-Fi Router", watts: 15 }
 ];
 
 export default function SolarCalculator() {
   const [items, setItems] = useState<any[]>([]);
+  const [selectedAppliance, setSelectedAppliance] = useState("");
   const [backupHours, setBackupHours] = useState(8);
+  const [panelSize, setPanelSize] = useState(450);
 
-  function updateItem(name: string, field: string, value: number) {
-    const existing = items.find((i) => i.name === name);
+  // ADD APPLIANCE
+  function addAppliance() {
+    if (!selectedAppliance) return;
 
-    if (existing) {
-      setItems(items.map(i =>
-        i.name === name ? { ...i, [field]: value } : i
-      ));
-    } else {
-      const base = appliancesList.find(a => a.name === name);
-      setItems([
-        ...items,
-        { name, watts: base?.watts, qty: 1, hours: 1, [field]: value }
-      ]);
-    }
+    const base = appliancesList.find(a => a.name === selectedAppliance);
+
+    if (items.find(i => i.name === selectedAppliance)) return;
+
+    setItems([
+      ...items,
+      { name: base?.name, watts: base?.watts, qty: 1, hours: 1 }
+    ]);
+
+    setSelectedAppliance("");
   }
 
-  // 🔥 CALCULATIONS
+  // UPDATE
+  function updateItem(name: string, field: string, value: number) {
+    setItems(items.map(i =>
+      i.name === name ? { ...i, [field]: value } : i
+    ));
+  }
+
+  // REMOVE
+  function removeItem(name: string) {
+    setItems(items.filter(i => i.name !== name));
+  }
+
+  // CALCULATIONS
   const result = useMemo(() => {
     let totalWatts = 0;
     let totalWh = 0;
@@ -58,8 +75,8 @@ export default function SolarCalculator() {
     const batteryWh = totalWatts * backupHours;
     const batteryKwh = batteryWh / 1000;
 
-    const solarWatts = (totalWh / 5) * 1.3; // Nigeria sun + losses
-    const panels = Math.ceil(solarWatts / 400); // 400W panel
+    const solarWatts = (totalWh / 5) * 1.3;
+    const panels = Math.ceil(solarWatts / panelSize);
 
     return {
       totalWatts,
@@ -68,92 +85,144 @@ export default function SolarCalculator() {
       solarWatts,
       panels,
     };
-  }, [items, backupHours]);
+  }, [items, backupHours, panelSize]);
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-br from-green-50 via-white to-green-100 dark:from-gray-950 dark:to-gray-900">
 
-      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">
-        ⚡ Solar Power Calculator
+      <h1 className="text-3xl font-bold mb-6">
+        ⚡ Solar Calculator
       </h1>
 
-      {/* APPLIANCES */}
-      <div className="grid md:grid-cols-3 gap-4">
-        {appliancesList.map((a) => (
+      <div className="grid lg:grid-cols-2 gap-8">
+
+        {/* LEFT SIDE */}
+        <div className="space-y-6">
+
+          {/* ADD APPLIANCE */}
+          <div className="flex gap-2">
+            <select
+              value={selectedAppliance}
+              onChange={(e) => setSelectedAppliance(e.target.value)}
+              className="input-green flex-1"
+            >
+              <option value="">Select Appliance</option>
+              {appliancesList.map(a => (
+                <option key={a.name} value={a.name}>
+                  {a.name} ({a.watts}W)
+                </option>
+              ))}
+            </select>
+
+            <button
+              onClick={addAppliance}
+              className="px-4 rounded-xl bg-green-600 text-white"
+            >
+              Add
+            </button>
+          </div>
+
+          {/* SELECTED APPLIANCES */}
+          <div className="space-y-4">
+            {items.map(item => (
+              <motion.div
+                key={item.name}
+                layout
+                className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow flex flex-col gap-3"
+              >
+                <div className="flex justify-between">
+                  <h3 className="font-semibold">
+                    {item.name} ({item.watts}W)
+                  </h3>
+
+                  <button onClick={() => removeItem(item.name)}>
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <input
+                    type="number"
+                    value={item.qty}
+                    onChange={(e) =>
+                      updateItem(item.name, "qty", Number(e.target.value))
+                    }
+                    className="input-green"
+                    placeholder="Qty"
+                  />
+
+                  <input
+                    type="number"
+                    value={item.hours}
+                    onChange={(e) =>
+                      updateItem(item.name, "hours", Number(e.target.value))
+                    }
+                    className="input-green"
+                    placeholder="Hours"
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* SETTINGS */}
+          <div className="grid grid-cols-2 gap-4">
+
+            <div>
+              <label>Backup Time</label>
+              <select
+                value={backupHours}
+                onChange={(e) => setBackupHours(Number(e.target.value))}
+                className="input-green"
+              >
+                <option value={4}>4 Hours</option>
+                <option value={8}>8 Hours</option>
+                <option value={24}>24 Hours</option>
+              </select>
+            </div>
+
+            <div>
+              <label>Panel Size (W)</label>
+              <input
+                type="number"
+                value={panelSize}
+                onChange={(e) => setPanelSize(Number(e.target.value))}
+                className="input-green"
+              />
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* RIGHT SIDE (RESULT) */}
+        <div className="sticky top-6 h-fit">
+
           <motion.div
-            key={a.name}
-            whileHover={{ scale: 1.03 }}
-            className="p-4 rounded-2xl bg-white/70 dark:bg-gray-800/70 
-            backdrop-blur shadow-lg space-y-3"
+            className="p-6 rounded-2xl bg-green-100 dark:bg-green-900/20 shadow-xl space-y-3"
           >
-            <h2 className="font-semibold">{a.name}</h2>
-            <p className="text-sm text-gray-500">{a.watts}W</p>
+            <h2 className="text-xl font-bold text-green-700">
+              ⚡ Result
+            </h2>
 
-            <input
-              type="number"
-              placeholder="Quantity"
-              className="input-green"
-              onChange={(e) =>
-                updateItem(a.name, "qty", Number(e.target.value))
-              }
-            />
-
-            <input
-              type="number"
-              placeholder="Hours/day"
-              className="input-green"
-              onChange={(e) =>
-                updateItem(a.name, "hours", Number(e.target.value))
-              }
-            />
+            <p>Total Load: <b>{result.totalWatts} W</b></p>
+            <p>Daily Energy: <b>{(result.totalWh / 1000).toFixed(2)} kWh</b></p>
+            <p>Battery: <b>{result.batteryKwh.toFixed(2)} kWh</b></p>
+            <p>
+              Panels: <b>{result.panels}</b> ({panelSize}W each)
+            </p>
           </motion.div>
-        ))}
+
+        </div>
+
       </div>
 
-      {/* BACKUP TIME */}
-      <div className="mt-8">
-        <h2 className="font-semibold mb-2">Battery Backup Time</h2>
-
-        <select
-          value={backupHours}
-          onChange={(e) => setBackupHours(Number(e.target.value))}
-          className="input-green"
-        >
-          <option value={1}>1 Hour</option>
-          <option value={2}>2 Hours</option>
-          <option value={3}>3 Hours</option>
-          <option value={4}>4 Hours</option>
-          <option value={5}>5 Hours</option>
-          <option value={8}>Overnight (8h)</option>
-          <option value={24}>24 Hours</option>
-          <option value={48}>2 days</option>
-        </select>
-      </div>
-
-      {/* RESULT */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mt-10 p-6 rounded-2xl bg-green-100 dark:bg-green-900/20 shadow-xl space-y-3"
-      >
-        <h2 className="text-xl font-bold text-green-700">
-          ⚡ Your Solar Requirement
-        </h2>
-
-        <p>Total Load: <b>{result.totalWatts} W</b></p>
-        <p>Daily Energy: <b>{(result.totalWh / 1000).toFixed(2)} kWh</b></p>
-        <p>Battery Needed: <b>{result.batteryKwh.toFixed(2)} kWh</b></p>
-        <p>Solar Panels: <b>{result.panels} panels (400W each)</b></p>
-      </motion.div>
-
-      {/* STYLES */}
       <style jsx>{`
         .input-green {
           width: 100%;
           padding: 10px;
           border-radius: 12px;
           background: rgba(255,255,255,0.7);
-          box-shadow: 0 4px 10px rgba(0,0,0,0.05);
           outline: none;
         }
       `}</style>
