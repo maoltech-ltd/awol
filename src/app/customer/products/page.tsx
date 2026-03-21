@@ -278,15 +278,18 @@ useEffect(() => {
           >
 
             <motion.div
-              className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-8 shadow-2xl relative"
+              // className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-8 shadow-2xl relative"
+              className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto"
               initial={{ scale: .8 }}
               animate={{ scale: 1 }}
               exit={{ scale: .8 }}
             >
 
               <button
-                className="absolute top-4 right-4 dark:text-dark"
-                onClick={() => setSelected(null)}
+                // className="absolute top-4 right-4 dark:text-dark"
+                // onClick={() => setSelected(null)}
+                className="sticky top-0 ml-auto block bg-white dark:bg-gray-900 z-10 p-2 rounded-full shadow"
+                onClick={(e) => e.stopPropagation()}
               >
                 <X />
               </button>

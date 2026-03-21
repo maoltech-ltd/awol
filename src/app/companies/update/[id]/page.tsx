@@ -44,7 +44,7 @@ export default function UpdateCompany() {
   async function submit(e: any) {
     e.preventDefault();
 
-    await api.put(`v1/awol/companies/${id}/`, form, {
+    await api.put(`v1/awol/companies/single/${id}/`, form, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
