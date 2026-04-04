@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, BatteryCharging, Zap } from "lucide-react"
 import Image from "next/image"
 import api from "@/src/api"
+import WhatsAppButton from "@/src/components/Buttons/WhatsAppButton"
 
 interface ProductModel {
   id: number
@@ -366,6 +367,21 @@ useEffect(() => {
                 </div>
 
               )}
+              
+              <div className="mt-6">
+
+                <h3 className="font-semibold mb-3">
+                  Interested in this product?
+                </h3>
+                
+                <WhatsAppButton
+                  message={`Hello, I am interested in this product:%0A
+                  Model: ${selected.model_name}%0A
+                  Price: ₦${selected.cash_price}%0A
+                  Installment: ${selected.installment_allowed ? "Yes" : "No"}`}
+                />
+
+            </div>
 
             </motion.div>
 
@@ -398,3 +414,223 @@ useEffect(() => {
     </main>
   )
 }
+
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { X, BatteryCharging } from "lucide-react";
+// import Image from "next/image";
+// import api from "@/src/api";
+// import WhatsAppButton from "@/src/components/Buttons/WhatsAppButton";
+
+// interface ProductModel {
+//   id: number;
+//   model_name: string;
+//   cash_price: number;
+//   installment_price?: number;
+//   down_payment?: number;
+//   installment_months: number;
+//   installment_allowed: Boolean;
+//   default_image: string;
+//   other_images?: string[];
+//   stock_quantity: number;
+//   is_available: boolean;
+//   is_featured: boolean;
+//   features?: Record<string, string>;
+// }
+
+// interface Product {
+//   id: number;
+//   name: string;
+//   models: ProductModel[];
+// }
+
+// interface Company {
+//   id: number;
+//   name: string;
+//   company_type: string;
+//   products: Product[];
+// }
+
+// export default function ProductsPage() {
+//   const [products, setProducts] = useState<Product[]>([]);
+//   const [selected, setSelected] = useState<ProductModel | null>(null);
+//   const [searchProduct, setSearchProduct] = useState("");
+//   const [searchModel, setSearchModel] = useState("");
+//   const [companyFilter, setCompanyFilter] = useState("");
+
+//   const [minPrice, setMinPrice] = useState("");
+//   const [maxPrice, setMaxPrice] = useState("");
+
+//   const [installmentOnly, setInstallmentOnly] = useState(false);
+//   const [page, setPage] = useState(1);
+//   const [hasNext, setHasNext] = useState(false);
+//   const [hasPrev, setHasPrev] = useState(false);
+
+//   useEffect(() => {
+//     const params = new URLSearchParams();
+
+//     if (searchProduct) params.append("product", searchProduct);
+//     if (searchModel) params.append("model", searchModel);
+//     if (companyFilter) params.append("company", companyFilter);
+
+//     if (minPrice) params.append("min_price", minPrice);
+//     if (maxPrice) params.append("max_price", maxPrice);
+
+//     if (installmentOnly) params.append("installment_allowed", "true");
+//     params.append("page", String(page));
+//     params.append("page_size", "20");
+
+//     api.get(`v1/customer-awol/companies-products?${params.toString()}`)
+//       .then(res => {
+//         const companies: Company[] = res.data;
+//         setProducts(companies.flatMap(company => company.products));
+//       });
+//   }, [searchProduct, searchModel, companyFilter, minPrice, maxPrice, installmentOnly, page]);
+
+//   useEffect(() => {
+//     setPage(1);
+//   }, [searchProduct, searchModel, companyFilter, minPrice, maxPrice, installmentOnly]);
+
+//   return (
+//     <main className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-gray-200 dark:from-black dark:via-gray-950 dark:to-black text-gray-900 dark:text-white">
+
+//       {/* HEADER */}
+//       <section className="max-w-7xl mx-auto px-6 pt-24 pb-16 text-center">
+//         <motion.h1
+//           initial={{ opacity: 0, y: 40 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           className="text-5xl font-bold"
+//         >
+//           Explore Our Products
+//         </motion.h1>
+
+//         <p className="mt-4 text-gray-600 dark:text-gray-400">
+//           Browse innovative technology from our partner companies.
+//         </p>
+//       </section>
+
+//       {/* PRODUCTS */}
+//       <section className="max-w-7xl mx-auto px-6 pb-20 space-y-16">
+//         {products.map((product, i) => (
+//           <motion.div
+//             key={product.id}
+//             initial={{ opacity: 0, y: 40 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ delay: i * .1 }}
+//           >
+
+//             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+//               {product.models.map(model => (
+//                 <motion.div
+//                   key={model.id}
+//                   whileHover={{ scale: 1.05 }}
+//                   className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden cursor-pointer"
+//                   onClick={() => setSelected(model)}
+//                 >
+
+//                   <div className="relative aspect-[4/3] bg-gray-200 overflow-hidden">
+//                     {model.default_image ? (
+//                       <Image
+//                         src={model.default_image}
+//                         alt={model.model_name}
+//                         fill
+//                         className="object-cover"
+//                       />
+//                     ) : (
+//                       <div className="flex items-center justify-center h-full">
+//                         <BatteryCharging className="w-12 h-12 text-green-500" />
+//                       </div>
+//                     )}
+//                   </div>
+
+//                   <div className="p-6">
+//                     <h3 className="text-xl font-semibold">
+//                       {model.model_name}
+//                     </h3>
+
+//                     <p className="text-sm text-gray-500 mt-1">
+//                       {product.name}
+//                     </p>
+
+//                     <p className="mt-4 font-bold text-green-500">
+//                       ₦{model.cash_price}
+//                     </p>
+//                   </div>
+
+//                 </motion.div>
+//               ))}
+//             </div>
+//           </motion.div>
+//         ))}
+//       </section>
+
+//       {/* MODAL */}
+//       <AnimatePresence>
+//         {selected && (
+//           <motion.div
+//             className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50"
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             exit={{ opacity: 0 }}
+//           >
+
+//             <motion.div
+//               className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-8 shadow-2xl max-h-[90vh] overflow-y-auto"
+//               initial={{ scale: .8 }}
+//               animate={{ scale: 1 }}
+//               exit={{ scale: .8 }}
+//             >
+
+//               <button
+//                 onClick={() => setSelected(null)}
+//                 className="ml-auto block p-2"
+//               >
+//                 <X />
+//               </button>
+
+//               {selected.default_image && (
+//                 <Image
+//                   src={selected.default_image}
+//                   alt={selected.model_name}
+//                   width={400}
+//                   height={300}
+//                   className="rounded-xl mb-6"
+//                 />
+//               )}
+
+//               <h2 className="text-2xl font-bold">
+//                 {selected.model_name}
+//               </h2>
+
+//               <div className="mt-4 space-y-2">
+//                 <p className="text-green-500 text-xl font-bold">
+//                   ₦{selected.cash_price}
+//                 </p>
+
+//                 {selected.installment_allowed && (
+//                   <>
+//                     <p>Installment: ₦{selected.installment_price}</p>
+//                     <p>Down Payment: ₦{selected.down_payment}</p>
+//                     <p>{selected.installment_months} months</p>
+//                   </>
+//                 )}
+//               </div>
+
+//               {/* 🔥 WHATSAPP MESSAGE */}
+//               <WhatsAppButton
+//                 message={`Hello, I am interested in this product:%0A
+// Model: ${selected.model_name}%0A
+// Price: ₦${selected.cash_price}%0A
+// Installment: ${selected.installment_allowed ? "Yes" : "No"}`}
+//               />
+
+//             </motion.div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+
+//     </main>
+//   );
+// }
