@@ -66,21 +66,25 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
         }`}
       </Script>
 
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-white dark:bg-black">
 
         {showSidebar && (
           <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
         )}
 
-        <div
+        {/* <div
           className={`flex-1 flex flex-col transition-all duration-300 ${
             showSidebar && sidebarOpen ? "ml-64" : "ml-0"
           }`}
+        > */}
+        <div
+          className={`flex-1 flex flex-col transition-all duration-300 ml-0`}
         >
 
           {showHeaderFooter && <Header />}
 
-          <main className="flex-1 p-6 transition-all duration-300">
+          {/* <main className="flex-1 p-6 transition-all duration-300"> */}
+          <main className="flex-1 px-4 py-4 transition-all duration-300">
             {children}
           </main>
 

@@ -27,10 +27,16 @@ export default function Sidebar({ open, setOpen }: any) {
   const pathname = usePathname();
 
   return (
+    // <motion.aside
+    //   animate={{ width: open ? 256 : 0 }}
+    //   transition={{ duration: 0.3 }}
+    //   className="h-screen border-r bg-white dark:bg-black dark:border-gray-800 fixed overflow-hidden"
+    // >
     <motion.aside
-      animate={{ width: open ? 256 : 0 }}
+      initial={false}
+      animate={{ x: open ? 0 : -260 }}
       transition={{ duration: 0.3 }}
-      className="h-screen border-r bg-white dark:bg-black dark:border-gray-800 fixed overflow-hidden"
+      className="h-screen w-64 border-r bg-white dark:bg-black dark:border-gray-800 fixed z-50"
     >
 
       {/* Toggle */}
