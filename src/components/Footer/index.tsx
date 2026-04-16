@@ -141,15 +141,6 @@ const Footer = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-8 py-10 bg-white/10 backdrop-blur-md">
 
         <div>
-          <h4 className="font-semibold mb-3">Products</h4>
-          <ul className="space-y-2 text-sm text-green-100">
-            <li><Link href="/products">All Products</Link></li>
-            <li><Link href="/products/model">Product Models</Link></li>
-            <li><Link href="/products/product">Add Product</Link></li>
-          </ul>
-        </div>
-
-        <div>
           <h4 className="font-semibold mb-3">Company</h4>
           <ul className="space-y-2 text-sm text-green-100">
             <li><Link href="/about">About AWOL</Link></li>

@@ -288,7 +288,7 @@ useEffect(() => {
               <button
                 // className="absolute top-4 right-4 dark:text-dark"
                 onClick={() => setSelected(null)}
-                className="sticky top-0 ml-auto block bg-white dark:bg-gray-900 z-10 p-2 rounded-full shadow"
+                className="sticky top-0 ml-auto block bg-white text-dark dark:bg-dark dark:text-white z-10 p-2 rounded-full shadow"
                 // onClick={(e) => e.stopPropagation()}
               >
                 <X />
