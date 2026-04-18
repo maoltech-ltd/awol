@@ -42,6 +42,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Sidebar from "../components/SideBar";
 import { useState } from "react";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function ClientWrapper({ children }: { children: React.ReactNode }) {
 
@@ -80,6 +81,13 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
         <div
           className={`flex-1 flex flex-col transition-all duration-300 ml-0`}
         >
+
+          {/* Floating Theme Toggle when header is hidden */}
+          {!showHeaderFooter && (
+            <div className="fixed top-4 right-4 z-50">
+              <ThemeToggle />
+            </div>
+          )}
 
           {showHeaderFooter && <Header />}
 
