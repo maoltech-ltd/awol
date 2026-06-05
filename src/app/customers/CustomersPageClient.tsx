@@ -109,10 +109,10 @@ export default function CustomersPageClient({ searchParams }: any) {
             className="p-5 rounded-2xl bg-white dark:bg-gray-900 shadow hover:shadow-xl transition flex justify-between items-center"
           >
             <div>
-              <h2 className="font-semibold text-lg text-gray-800 dark:text-dark">
+              <h2 className="font-semibold text-lg text-gray-800 dark:text-gray-100">
                 {c.full_name}
               </h2>
-              <p className="text-sm text-gray-500">{c.phone}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{c.phone}</p>
             </div>
 
             <Link

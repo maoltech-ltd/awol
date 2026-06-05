@@ -6,6 +6,43 @@ html{
     scroll-behavior: smooth;
 }
 
+body {
+  color-scheme: light;
+}
+
+.dark body {
+  color-scheme: dark;
+}
+
+input,
+select,
+textarea {
+  color: #111827;
+  background-color: #ffffff;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  color: #f9fafb;
+  background-color: #1f2937;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6b7280;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+.dark select option {
+  color: #111827;
+  background-color: #ffffff;
+}
+
 h1>a>.icon.icon-link:before,
 h2>a>.icon.icon-link:before,
 h3>a>.icon.icon-link:before{

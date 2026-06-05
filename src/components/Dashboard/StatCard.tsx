@@ -20,12 +20,12 @@ export default function StatCard({ title, value, icon, change }: Props) {
     >
       <div className="flex justify-between items-center">
         <div>
-          <p className="text-sm text-gray-500">{title}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
           <h2 className="text-2xl font-bold mt-1">{value}</h2>
           {change && <p className="text-sm text-green-500">{change}</p>}
         </div>
 
-        <div className="text-gray-600">{icon}</div>
+        <div className="text-gray-600 dark:text-gray-300">{icon}</div>
       </div>
     </motion.div>
   );

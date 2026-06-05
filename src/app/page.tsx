@@ -123,11 +123,11 @@ export default function LandingPage() {
 
               <Icon className="w-10 h-10 text-green-500 mb-5" />
 
-              <h3 className="text-xl font-semibold dark:text-dark">
+              <h3 className="text-xl font-semibold dark:text-gray-100">
                 {item.title}
               </h3>
 
-              <p className="mt-3 text-gray-600 dark:text-dark text-sm">
+              <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm">
                 {item.desc}
               </p>
 
@@ -162,11 +162,11 @@ export default function LandingPage() {
               whileHover={{ scale: 1.05 }}
               className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
             >
-              <h3 className="text-2xl font-bold dark:text-dark">
+              <h3 className="text-2xl font-bold dark:text-gray-100">
                 Instant Payment
               </h3>
 
-              <p className="mt-4 text-gray-600 dark:text-dark">
+              <p className="mt-4 text-gray-600 dark:text-gray-300">
                 Purchase your products immediately and enjoy full ownership
                 right away with exclusive purchase benefits.
               </p>
@@ -184,11 +184,11 @@ export default function LandingPage() {
               whileHover={{ scale: 1.05 }}
               className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
             >
-              <h3 className="text-2xl font-bold dark:text-dark">
+              <h3 className="text-2xl font-bold dark:text-gray-100">
                 Installment Plans
               </h3>
 
-              <p className="mt-4 text-gray-600 dark:text-dark">
+              <p className="mt-4 text-gray-600 dark:text-gray-300">
                 Spread your payments over time with flexible installment
                 packages designed to fit your budget.
               </p>
@@ -205,11 +205,11 @@ export default function LandingPage() {
               whileHover={{ scale: 1.05 }}
               className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
             >
-              <h3 className="text-2xl font-bold dark:text-dark">
+              <h3 className="text-2xl font-bold dark:text-gray-100">
                 Solar Power Calculator
               </h3>
 
-              <p className="mt-4 text-gray-600 dark:text-dark">
+              <p className="mt-4 text-gray-600 dark:text-gray-300">
                 Estimate the battery and solar panel power you need for your home appliances.
                 Choose items like TV, fan, fridge, laptop, and more, then calculate required
                 energy to match your desired backup duration.
@@ -309,7 +309,7 @@ export default function LandingPage() {
 
               <button
                 onClick={closeModal}
-                className="absolute top-4 right-4 dark:text-dark"
+                className="absolute top-4 right-4 text-gray-700 dark:text-gray-200"
               >
                 <X />
               </button>
@@ -317,11 +317,11 @@ export default function LandingPage() {
 
               {modal === "company" && (
                 <>
-                  <h3 className="text-2xl font-bold dark:text-dark">
+                  <h3 className="text-2xl font-bold dark:text-gray-100">
                     About AWOL
                   </h3>
 
-                  <p className="mt-4 text-gray-600 dark:text-dark">
+                  <p className="mt-4 text-gray-600 dark:text-gray-300">
                     AWOL is a technology-driven company focused on delivering
                     innovative solutions in renewable energy, electric
                     mobility, and smart electronics. Our mission is to make
@@ -334,11 +334,11 @@ export default function LandingPage() {
 
               {modal === "models" && (
                 <>
-                  <h3 className="text-2xl font-bold dark:text-dark">
+                  <h3 className="text-2xl font-bold dark:text-gray-100">
                     Installment Packages
                   </h3>
 
-                  <p className="mt-4 text-gray-600 dark:text-dark">
+                  <p className="mt-4 text-gray-600 dark:text-gray-300">
                     Coming soon
                   </p>
                 </>

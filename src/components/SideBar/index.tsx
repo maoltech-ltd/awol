@@ -42,7 +42,7 @@ export default function Sidebar({ open, setOpen }: any) {
       {/* Toggle */}
       <button
         onClick={() => setOpen(!open)}
-        className="absolute -right-10 top-4 p-2 bg-white dark:bg-gray-900 shadow rounded-lg"
+        className="absolute -right-10 top-4 p-2 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 shadow rounded-lg"
       >
         <Menu size={20} />
       </button>
@@ -67,17 +67,17 @@ export default function Sidebar({ open, setOpen }: any) {
                     scale: 1.05,
                     boxShadow: "0px 0px 10px rgba(34,197,94,0.7)"
                   }}
-                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition dark:text-light
+                  className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition
                   ${
                     active
                       ? "bg-green-500 text-white shadow-lg shadow-green-500/40"
-                      : "hover:bg-green-50 dark:hover:bg-green-900/20"
+                      : "text-gray-700 hover:bg-green-50 dark:text-gray-200 dark:hover:bg-green-900/20"
                   }`}
                 >
 
                   <motion.div
                     whileHover={{ scale: 1.3 }}
-                    className="text-green-500"
+                    className={active ? "text-white" : "text-green-600 dark:text-green-400"}
                   >
                     <Icon size={18} />
                   </motion.div>

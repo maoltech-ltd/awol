@@ -109,7 +109,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className={`${inter.variable} ${manrope.variable} font-mr bg-light dark:bg-dark`}
+        className={`${inter.variable} ${manrope.variable} font-mr bg-light text-gray-900 dark:bg-dark dark:text-gray-100`}
       >
         <ClientWrapper>{children}</ClientWrapper>
       </body>

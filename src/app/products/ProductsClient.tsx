@@ -96,12 +96,12 @@ export default function ProductsClient({ page }: { page: number }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="p-4 rounded-2xl bg-white shadow-md hover:shadow-xl transition cursor-pointer"
+            className="p-4 rounded-2xl bg-white dark:bg-gray-900 shadow-md hover:shadow-xl transition cursor-pointer"
           >
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">{p.name}</h2>
-                <p className="text-sm text-gray-500">Company #{p.company}</p>
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{p.name}</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Company #{p.company}</p>
               </div>
 
               <Link
