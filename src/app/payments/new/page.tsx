@@ -95,7 +95,7 @@ export default function NewPayment() {
 
         <div>
           <label className={labelClass}>Contract ID</label>
-          <p className={hintClass}>Enter the ID of the customer's active contract.</p>
+          <p className={hintClass}>Enter the ID of the customer&apos;s active contract.</p>
           <input
             type="number"
             className={inputClass}
