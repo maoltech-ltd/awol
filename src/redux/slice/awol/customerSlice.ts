@@ -17,9 +17,22 @@ export interface Customer {
   created_at: string;
 }
 
+export interface CustomerInvite {
+  id: number;
+  token: string;
+  full_name?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  note?: string | null;
+  status: string;
+  public_url: string;
+  created_at: string;
+}
+
 interface CustomerState {
     customers: Customer[];
     customer: Customer | null;
+    invite: CustomerInvite | null;
     contracts: any[];
     payments: any[];
     status: string;
@@ -28,6 +41,7 @@ interface CustomerState {
 const initialState: CustomerState = {
     customers: [],
     customer: null,
+    invite: null,
     contracts: [],
     payments: [],
     status: "idle",
@@ -61,6 +75,19 @@ export const addCustomer = createAsyncThunk(
     "customers/add",
     async ({token, data}: {token: string, data: Partial<Customer>}) => {
         const res = await api.post( "v1/awol/customers/add/", data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return res.data;
+    }
+);
+
+// CREATE CUSTOMER INVITE LINK
+export const createCustomerInvite = createAsyncThunk(
+    "customers/createInvite",
+    async ({token, data}: {token: string, data: Partial<CustomerInvite> & {frontend_base_url?: string}}) => {
+        const res = await api.post( "v1/awol/customers/invites/add/", data, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -107,6 +134,16 @@ const customerSlice = createSlice({
                 // state.payments = action.payload.payments;
             })
             .addCase(addCustomer.rejected, (state) => {
+                state.status = "failed";
+            })
+            .addCase(createCustomerInvite.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(createCustomerInvite.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.invite = action.payload;
+            })
+            .addCase(createCustomerInvite.rejected, (state) => {
                 state.status = "failed";
             });
     },

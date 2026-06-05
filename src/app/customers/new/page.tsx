@@ -1,304 +1,134 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useAppDispatch } from "@/src/redux/hooks/dispatch";
+import { FormEvent, useState } from "react";
+import { Copy, Link as LinkIcon, Send } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useAppDispatch } from "@/src/redux/hooks/dispatch";
+import { createCustomerInvite } from "@/src/redux/slice/awol/customerSlice";
 import { RootState } from "@/src/redux/store";
-import { addCustomer } from "@/src/redux/slice/awol/customerSlice";
-import {
-  fetchProducts,
-  fetchProductDetails,
-} from "@/src/redux/slice/awol/productSlice";
-import { createContract } from "@/src/redux/slice/awol/contractSlice";
-import { useRouter } from "next/navigation";
 
-export default function NewContract() {
+export default function NewCustomerInvitePage() {
   const dispatch = useAppDispatch();
-  const router = useRouter();
-
   const user = useSelector((state: RootState) => state.user);
-  const { products, models } = useSelector(
-    (state: RootState) => state.product
-  );
 
-  // CUSTOMER
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-
-  // PRODUCT
-  const [selectedProduct, setSelectedProduct] = useState("");
-  const [selectedModel, setSelectedModel] = useState<any>(null);
-
-  // PAYMENT
-  const [totalPrice, setTotalPrice] = useState("");
-  const [downPayment, setDownPayment] = useState("");
-  const [isInstallment, setIsInstallment] = useState(false);
-
-  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    full_name: "",
+    phone: "",
+    note: "",
+  });
+  const [publicUrl, setPublicUrl] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // LOAD PRODUCTS
-  useEffect(() => {
-    if (!user?.token) return;
-    dispatch(fetchProducts({ token: user.token }));
-  }, [user?.token, dispatch]);
-
-  // LOAD MODELS
-  useEffect(() => {
-    if (!selectedProduct || !user?.token) return;
-    dispatch(
-      fetchProductDetails({ token: user.token, id: selectedProduct })
-    );
-  }, [user?.token,selectedProduct, dispatch]);
-
-  // When model changes → auto-set correct price
-  useEffect(() => {
-    if (!selectedModel) return;
-
-    if (isInstallment) {
-      setTotalPrice(String(selectedModel.installment_price));
-    } else {
-      setTotalPrice(String(selectedModel.cash_price));
-    }
-  }, [selectedModel, isInstallment]);
-
-  const selectedModelData = useMemo(() => {
-    return models.find((m: any) => m.id === Number(selectedModel));
-  }, [selectedModel, models]);
-
-  const currency = new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-  });
-
-  function validate() {
-    if (!name.trim()) return "Customer name is required";
-    if (!phone.trim()) return "Phone number is required";
-    if (!selectedProduct) return "Please select a product";
-    if (!selectedModel) return "Please select a model";
-    if (Number(totalPrice) <= 0) return "Invalid total price";
-    if (Number(downPayment) < 0) return "Down payment cannot be negative";
-
-    if (isInstallment) {
-      if (!selectedModelData?.installment_allowed)
-        return "This model does not allow installment";
-
-      if (Number(downPayment) >= Number(totalPrice))
-        return "Down payment must be less than total price";
-    } else {
-      if (Number(downPayment) !== Number(totalPrice))
-        return "For instant purchase, full payment must be made";
-    }
-
-    return "";
-  }
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
+  async function submit(event: FormEvent) {
+    event.preventDefault();
     if (!user?.token) return;
 
-    setError("");
-    const validationError = validate();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
+    setLoading(true);
+    setMessage("");
+    setPublicUrl("");
 
     try {
-      setLoading(true);
-
-      const customerRes = await dispatch(
-        addCustomer({
+      const res = await dispatch(
+        createCustomerInvite({
           token: user.token,
           data: {
-            full_name: name,
-            phone,
-            address,
+            ...form,
+            frontend_base_url: window.location.origin,
           },
         })
       ).unwrap();
 
-      const customerId = customerRes.id;
-
-      await dispatch(
-        createContract({
-          token: user.token,
-          data: {
-            customer: customerId,
-            product_model: Number(selectedModel),
-            total_price: Number(totalPrice),
-            down_payment_paid: Number(downPayment),
-            is_installment: isInstallment,
-          },
-        })
-      ).unwrap();
-
-      router.push(`/customers/single/${customerId}`);
-    } catch {
-      setError("Failed to create contract");
+      setPublicUrl(res.public_url);
+      setMessage("Customer link created.");
+    } catch (error: any) {
+      setMessage(error?.response?.data ? JSON.stringify(error.response.data) : "Could not create customer link.");
     } finally {
       setLoading(false);
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-10 px-4">
-      <form
-        onSubmit={submit}
-        className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg space-y-6"
-      >
-        <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
-          Create New Contract
-        </h1>
+  async function copyLink() {
+    if (!publicUrl) return;
+    await navigator.clipboard.writeText(publicUrl);
+    setMessage("Link copied.");
+  }
 
-        {error && (
-          <div className="bg-red-100 text-red-600 p-3 rounded">
-            {error}
+  return (
+    <main className="min-h-screen bg-gray-100 px-4 py-10 dark:bg-gray-900">
+      <section className="mx-auto max-w-2xl rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+        <div className="mb-6">
+          <div className="inline-flex items-center gap-2 rounded-md bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+            <LinkIcon size={16} />
+            Customer onboarding link
+          </div>
+          <h1 className="mt-3 text-2xl font-semibold text-gray-900 dark:text-white">
+            Start Customer Registration
+          </h1>
+          <p className="mt-2 text-sm text-gray-500">
+            Create a secure link, copy it, and send it to the customer yourself.
+          </p>
+        </div>
+
+        <form onSubmit={submit} className="space-y-4">
+          <div>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Customer name</label>
+            <input
+              value={form.full_name}
+              onChange={(event) => setForm((current) => ({ ...current, full_name: event.target.value }))}
+              className="mt-1 h-11 w-full rounded-md border border-gray-300 bg-transparent px-3 outline-none focus:border-emerald-500"
+              placeholder="Optional prefill"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Phone</label>
+            <input
+              value={form.phone}
+              onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
+              className="mt-1 h-11 w-full rounded-md border border-gray-300 bg-transparent px-3 outline-none focus:border-emerald-500"
+              placeholder="Optional prefill"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Internal note</label>
+            <textarea
+              value={form.note}
+              onChange={(event) => setForm((current) => ({ ...current, note: event.target.value }))}
+              className="mt-1 min-h-24 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 outline-none focus:border-emerald-500"
+              placeholder="Optional note for staff"
+            />
+          </div>
+
+          <button
+            disabled={loading || !user?.token}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-gray-950 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60 dark:bg-white dark:text-gray-950"
+          >
+            <Send size={17} />
+            {loading ? "Creating link..." : "Create Link"}
+          </button>
+        </form>
+
+        {publicUrl && (
+          <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+            <label className="text-sm font-medium text-emerald-900">Send this link to the customer</label>
+            <div className="mt-2 flex gap-2">
+              <input readOnly value={publicUrl} className="h-11 flex-1 rounded-md border border-emerald-200 bg-white px-3 text-sm text-gray-800" />
+              <button onClick={copyLink} className="inline-flex h-11 items-center gap-2 rounded-md bg-emerald-700 px-4 text-sm font-semibold text-white">
+                <Copy size={16} />
+                Copy
+              </button>
+            </div>
           </div>
         )}
 
-        {/* CUSTOMER */}
-        <div className="space-y-4">
-          <h2 className="font-semibold text-gray-700 dark:text-gray-200">
-            Customer Information
-          </h2>
-
-          <div>
-            <label className="font-medium">Full Name</label>
-            <p className="text-sm text-gray-500">
-              Customer&apos;s legal full name.
-            </p>
-            <input
-              className="w-full border px-3 py-2 rounded bg-transparent"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+        {message && (
+          <div className="mt-4 rounded-md bg-gray-50 p-3 text-sm text-gray-700 dark:bg-gray-900 dark:text-gray-200">
+            {message}
           </div>
-
-          <div>
-            <label className="font-medium">Phone Number</label>
-            <p className="text-sm text-gray-500">
-              Active phone number for payment reminders.
-            </p>
-            <input
-              className="w-full border px-3 py-2 rounded bg-transparent"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label className="font-medium">Address</label>
-            <p className="text-sm text-gray-500">
-              Customer residential or business address.
-            </p>
-            <input
-              className="w-full border px-3 py-2 rounded bg-transparent"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {/* PRODUCT */}
-        <div className="space-y-4">
-          <h2 className="font-semibold text-gray-700 dark:text-gray-200">
-            Product Selection
-          </h2>
-
-          <select
-            className="w-full border px-3 py-2 rounded bg-transparent"
-            value={selectedProduct}
-            onChange={(e) => {
-              setSelectedProduct(e.target.value);
-              setSelectedModel("");
-            }}
-          >
-            <option value="">Select Product</option>
-            {products.map((p: any) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-
-          <select
-            className="w-full border px-3 py-2 rounded bg-transparent"
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-          >
-            <option value="">Select Model</option>
-            {models.map((m: any) => (
-              <option key={m.id} value={m.id}>
-                {m.model_name}
-              </option>
-            ))}
-          </select>
-
-          {/* SHOW PRICES */}
-          {selectedModelData && (
-            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded space-y-2">
-              <p>
-                💰 <strong>Instant Price:</strong>{" "}
-                {currency.format(Number(selectedModelData.cash_price))}
-              </p>
-              <p>
-                📅 <strong>Installment Price:</strong>{" "}
-                {currency.format(Number(selectedModelData.installment_price))}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* PAYMENT */}
-        <div className="space-y-4">
-          <h2 className="font-semibold text-gray-700 dark:text-gray-200">
-            Payment Details
-          </h2>
-
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={isInstallment}
-              onChange={(e) => setIsInstallment(e.target.checked)}
-            />
-            <span>Enable Installment Plan</span>
-          </label>
-
-          <div>
-            <label>Total Price</label>
-            <p className="text-sm text-gray-500">
-              Auto-filled based on purchase type.
-            </p>
-            <input
-              className="w-full border px-3 py-2 rounded bg-transparent"
-              value={totalPrice}
-              readOnly
-            />
-          </div>
-
-          <div>
-            <label>Down Payment Paid</label>
-            <p className="text-sm text-gray-500">
-              Amount customer is paying today.
-            </p>
-            <input
-              type="number"
-              className="w-full border px-3 py-2 rounded bg-transparent"
-              value={downPayment}
-              onChange={(e) => setDownPayment(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <button
-          disabled={loading}
-          className="w-full bg-black dark:bg-white text-white dark:text-black py-3 rounded font-medium"
-        >
-          {loading ? "Creating..." : "Create Contract"}
-        </button>
-      </form>
-    </div>
+        )}
+      </section>
+    </main>
   );
 }

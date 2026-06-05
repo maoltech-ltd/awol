@@ -95,7 +95,7 @@ export default function CustomersPageClient({ searchParams }: any) {
           href="/customers/new"
           className="px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow hover:shadow-xl transition"
         >
-          + Add Customer
+          Invite Customer
         </Link>
       </div>
 

@@ -49,11 +49,13 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  const publicPathPrefixes = ["/customer/register/"];
   const excludePaths = ["/signin", "/signup", "/", "/customer/products", "/customer/solar/calculator"];
   const excludePathsSidebar = ["/signin", "/signup", "/", "/customer/products", "/customer/solar/calculator"];
 
-  const showHeaderFooter = !excludePaths.includes(pathname);
-  const showSidebar = !excludePathsSidebar.includes(pathname);
+  const isPublicPrefixedPath = publicPathPrefixes.some((prefix) => pathname.startsWith(prefix));
+  const showHeaderFooter = !excludePaths.includes(pathname) && !isPublicPrefixedPath;
+  const showSidebar = !excludePathsSidebar.includes(pathname) && !isPublicPrefixedPath;
 
   return (
     <ReduxProvider>
