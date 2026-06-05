@@ -70,20 +70,20 @@ export default function ProductsClient({ page }: { page: number }) {
   }, [user?.token, page, dispatch]);
 
   if (!mounted) return null;
-  if (!user?.token) return <div className="p-6">Please login</div>;
-  if (status === "loading") return <div className="p-6">Loading...</div>;
-  if (status === "failed") return <div className="p-6">Failed to load products.</div>;
+  if (!user?.token) return <div className="p-6 text-slate-800 dark:text-slate-100">Please login</div>;
+  if (status === "loading") return <div className="p-6 text-slate-800 dark:text-slate-100">Loading...</div>;
+  if (status === "failed") return <div className="p-6 text-slate-800 dark:text-slate-100">Failed to load products.</div>;
 
   return (
-    <div className="p-6">
+    <div className="min-h-screen p-6 text-slate-900 dark:text-slate-100">
       <div className="flex justify-between mb-6 items-center">
-        <h1 className="text-3xl font-bold text-green-700">Products</h1>
+        <h1 className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">Products</h1>
 
         <div className="flex gap-3">
-          <Link href="/products/product" className="px-4 py-2 rounded-xl bg-green-600 text-white shadow-md hover:shadow-lg hover:bg-green-700 transition">
+          <Link href="/products/product" className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400">
             Add Product
           </Link>
-          <Link href="/products/model" className="px-4 py-2 rounded-xl bg-emerald-500 text-white shadow-md hover:shadow-lg hover:bg-emerald-600 transition">
+          <Link href="/products/model" className="rounded-md border border-emerald-700 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 shadow-sm transition hover:bg-emerald-50 dark:border-emerald-400 dark:bg-slate-900 dark:text-emerald-200 dark:hover:bg-slate-800">
             Add Model
           </Link>
         </div>
@@ -96,19 +96,19 @@ export default function ProductsClient({ page }: { page: number }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="p-4 rounded-2xl bg-white dark:bg-gray-900 shadow-md hover:shadow-xl transition cursor-pointer"
+            className="cursor-pointer rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
             <div className="flex justify-between items-center">
               <div>
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{p.name}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Company #{p.company}</p>
+                <h2 className="text-lg font-semibold text-slate-950 dark:text-white">{p.name}</h2>
+                <p className="text-sm text-slate-600 dark:text-slate-300">Company #{p.company}</p>
               </div>
 
               <Link
                 href={`/products/single/${p.id}`}
-                className="text-green-600 font-medium hover:underline"
+                className="font-medium text-emerald-700 hover:underline dark:text-emerald-300"
               >
-                View →
+                View
               </Link>
             </div>
           </motion.div>

@@ -34,7 +34,7 @@ const User =  ({ user, username }: any) => {
 
   return (
     <section className="md:w-[80%] m-auto md:pt-16 pt-12">
-      <div className="bg-white p-4  md:rounded-md">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100">
         <div className="flex items-center justify-between md:pl-4">
           <Avatar
             src={user.profilePicture}
@@ -65,13 +65,13 @@ const User =  ({ user, username }: any) => {
           </div>
         </div>
         <div className="pt-4">
-          <h1 className="lg:text-2xl md:text-xl text-lg md:font-bold font-medium">
+          <h1 className="text-lg font-medium text-slate-950 dark:text-white md:text-xl md:font-bold lg:text-2xl">
             {user.name}
           </h1>
-          <p>
+          <p className="text-slate-600 dark:text-slate-300">
             {user.username}
           </p>
-          <p className="text-lg py-2">{user.bio}</p>
+          <p className="py-2 text-lg text-slate-700 dark:text-slate-300">{user.bio}</p>
           <div className="flex gap-4 py-2">
             <div className="flex gap-1">
               <p className="font-semibold text-default-500 text-small">
@@ -101,7 +101,7 @@ const User =  ({ user, username }: any) => {
             fullWidth
             radius="sm"
             size="lg"
-            className="font-semibold mt-4 md:hidden text-neutral-600"
+            className="mt-4 font-semibold text-slate-700 dark:text-slate-100 md:hidden"
             // onClick={() => dispatch(setMoreInfo(true))}
           >
             {user.username}

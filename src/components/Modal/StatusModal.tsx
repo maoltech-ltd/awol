@@ -132,7 +132,7 @@ const StatusModal: React.FC<ModalProps> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <DialogPanel className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <DialogPanel className="fixed inset-0 bg-slate-950/70 transition-opacity" />
           </TransitionChild>
 
           {/* Content */}
@@ -145,7 +145,7 @@ const StatusModal: React.FC<ModalProps> = ({
             leaveFrom="opacity-100 scale-100"
             leaveTo={isSuccess ? "opacity-0 scale-90" : "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
           >
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+            <div className="inline-block transform overflow-hidden rounded-lg border border-slate-200 bg-white px-4 pt-5 pb-4 text-left align-bottom text-slate-900 shadow-xl transition-all dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle">
               <div>
                 {/* Icon Circle */}
                 <div
@@ -190,12 +190,12 @@ const StatusModal: React.FC<ModalProps> = ({
                 <div className="mt-3 text-center sm:mt-5">
                   <DialogTitle
                     as="h3"
-                    className="text-lg leading-6 font-medium text-gray-900"
+                    className="text-lg font-medium leading-6 text-slate-950 dark:text-white"
                   >
                     {title}
                   </DialogTitle>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">{message}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">{message}</p>
                   </div>
                 </div>
               </div>

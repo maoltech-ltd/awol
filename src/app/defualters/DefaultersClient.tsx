@@ -16,17 +16,20 @@ export default function DefaultersClient() {
     dispatch(fetchDefaults({ token: user.token, page: 1 }));
   }, [user?.token, dispatch]);
 
-  if (!user?.token) return <div className="p-6">Please login</div>;
-  if (status === "loading") return <div className="p-6">Loading...</div>;
-  if (status === "failed") return <div className="p-6">Failed to load customers.</div>;
+  if (!user?.token) return <div className="p-6 text-slate-800 dark:text-slate-100">Please login</div>;
+  if (status === "loading") return <div className="p-6 text-slate-800 dark:text-slate-100">Loading...</div>;
+  if (status === "failed") return <div className="p-6 text-slate-800 dark:text-slate-100">Failed to load customers.</div>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Defaulters</h1>
+    <div className="min-h-screen p-6 text-slate-900 dark:text-slate-100">
+      <h1 className="mb-4 text-2xl font-semibold text-slate-950 dark:text-white">Defaulters</h1>
 
       {customers.map((s: any) => (
-        <div key={s.id} className="border p-3 mb-2">
-          Customer #{s.customer} — Balance ₦{s.balance} — Due {s.next_due_date}
+        <div
+          key={s.id}
+          className="mb-2 rounded-lg border border-slate-200 bg-white p-3 text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
+        >
+          Customer #{s.customer} - Balance NGN {s.balance} - Due {s.next_due_date}
         </div>
       ))}
     </div>

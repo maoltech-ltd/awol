@@ -1,32 +1,32 @@
 export default function RecentContracts() {
   const contracts = [
-    { id: "CTR001", customer: "John Doe", balance: "₦120,000", status: "Active" },
-    { id: "CTR002", customer: "Mary Jane", balance: "₦80,000", status: "Overdue" },
-    { id: "CTR003", customer: "Ahmed Ali", balance: "₦0", status: "Completed" },
+    { id: "CTR001", customer: "John Doe", balance: "NGN 120,000", status: "Active" },
+    { id: "CTR002", customer: "Mary Jane", balance: "NGN 80,000", status: "Overdue" },
+    { id: "CTR003", customer: "Ahmed Ali", balance: "NGN 0", status: "Completed" },
   ];
 
   return (
-    <div className="p-6 rounded-2xl border bg-white dark:bg-gray-900 dark:border-gray-800">
-      <h3 className="font-semibold mb-4">Recent Contracts</h3>
+    <div className="rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100">
+      <h3 className="mb-4 font-semibold text-slate-950 dark:text-white">Recent Contracts</h3>
       <div className="space-y-3">
         {contracts.map((contract) => (
           <div
             key={contract.id}
-            className="flex justify-between items-center border-b pb-2 dark:border-gray-800"
+            className="flex items-center justify-between border-b border-slate-200 pb-2 last:border-b-0 dark:border-slate-800"
           >
             <div>
-              <p className="font-medium">{contract.customer}</p>
-              <p className="text-sm text-gray-500">{contract.id}</p>
+              <p className="font-medium text-slate-900 dark:text-slate-100">{contract.customer}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{contract.id}</p>
             </div>
             <div className="text-right">
-              <p>{contract.balance}</p>
+              <p className="text-slate-800 dark:text-slate-200">{contract.balance}</p>
               <p
                 className={`text-sm ${
                   contract.status === "Overdue"
-                    ? "text-red-500"
+                    ? "text-red-600 dark:text-red-300"
                     : contract.status === "Completed"
-                    ? "text-green-500"
-                    : "text-blue-500"
+                    ? "text-emerald-600 dark:text-emerald-300"
+                    : "text-blue-600 dark:text-blue-300"
                 }`}
               >
                 {contract.status}

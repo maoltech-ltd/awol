@@ -69,7 +69,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
         }`}
       </Script>
 
-      <div className="flex min-h-screen bg-white dark:bg-black">
+      <div className="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
 
         {showSidebar && (
           <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />

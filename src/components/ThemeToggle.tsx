@@ -13,7 +13,7 @@ export default function ThemeToggle() {
           whileHover={{ rotate: 20, scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setMode(mode === "light" ? "dark" : "light")}
-          className="p-2 rounded-xl hover:bg-gray-100 dark:text-light dark:hover:bg-gray-800 transition"
+          className="rounded-md border border-slate-200 bg-white p-2 text-slate-800 shadow-sm transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
         >
           {mode === "light" ? <Moon size={18} /> : <Sun size={18} />}
         </motion.button>

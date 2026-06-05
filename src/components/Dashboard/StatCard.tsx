@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
@@ -9,23 +10,22 @@ interface Props {
   change?: string;
 }
 
-
 export default function StatCard({ title, value, icon, change }: Props) {
   return (
     <motion.div
       whileHover={{ y: -5 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6 rounded-2xl shadow-sm border bg-white dark:bg-gray-900 dark:border-gray-800"
+      className="rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
     >
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
-          <h2 className="text-2xl font-bold mt-1">{value}</h2>
-          {change && <p className="text-sm text-green-500">{change}</p>}
+          <p className="text-sm text-slate-500 dark:text-slate-400">{title}</p>
+          <h2 className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">{value}</h2>
+          {change && <p className="text-sm text-emerald-600 dark:text-emerald-300">{change}</p>}
         </div>
 
-        <div className="text-gray-600 dark:text-gray-300">{icon}</div>
+        <div className="text-slate-600 dark:text-slate-300">{icon}</div>
       </div>
     </motion.div>
   );

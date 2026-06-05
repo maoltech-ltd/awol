@@ -5,40 +5,24 @@ import { DollarSign, Users, FileText, AlertTriangle } from "lucide-react";
 
 export default function Dashboard() {
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white p-6 transition">
-      
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Hire Purchase Dashboard</h1>
+    <main className="min-h-screen bg-slate-50 p-6 text-slate-900 transition dark:bg-slate-950 dark:text-slate-100">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-slate-950 dark:text-white">Hire Purchase Dashboard</h1>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Revenue"
-          value="₦2,450,000"
+          value="NGN 2,450,000"
           icon={<DollarSign />}
           change="+12% this month"
         />
-        <StatCard
-          title="Active Contracts"
-          value="128"
-          icon={<FileText />}
-        />
-        <StatCard
-          title="Total Customers"
-          value="320"
-          icon={<Users />}
-        />
-        <StatCard
-          title="Overdue Contracts"
-          value="18"
-          icon={<AlertTriangle />}
-        />
+        <StatCard title="Active Contracts" value="128" icon={<FileText />} />
+        <StatCard title="Total Customers" value="320" icon={<Users />} />
+        <StatCard title="Overdue Contracts" value="18" icon={<AlertTriangle />} />
       </div>
-    
-      {/* Charts + Recent */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <RevenueChart />
         <RecentContracts />
       </div>

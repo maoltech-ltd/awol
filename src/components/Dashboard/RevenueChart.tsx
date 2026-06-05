@@ -19,14 +19,14 @@ const data = [
 
 export default function RevenueChart() {
   return (
-    <div className="p-6 rounded-2xl border bg-white dark:bg-gray-900 dark:border-gray-800">
-      <h3 className="font-semibold mb-4">Monthly Revenue</h3>
+    <div className="rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100">
+      <h3 className="mb-4 font-semibold text-slate-950 dark:text-white">Monthly Revenue</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
-          <XAxis dataKey="month" />
-          <YAxis />
+          <XAxis dataKey="month" stroke="currentColor" />
+          <YAxis stroke="currentColor" />
           <Tooltip />
-          <Line type="monotone" dataKey="revenue" stroke="#4f46e5" />
+          <Line type="monotone" dataKey="revenue" stroke="#059669" />
         </LineChart>
       </ResponsiveContainer>
     </div>

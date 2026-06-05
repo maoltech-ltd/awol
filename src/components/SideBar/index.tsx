@@ -36,20 +36,20 @@ export default function Sidebar({ open, setOpen }: any) {
       initial={false}
       animate={{ x: open ? 0 : -260 }}
       transition={{ duration: 0.3 }}
-      className="h-screen w-64 border-r bg-white dark:bg-black dark:border-gray-800 fixed z-50"
+      className="fixed z-50 h-screen w-64 border-r border-slate-200 bg-white text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
     >
 
       {/* Toggle */}
       <button
         onClick={() => setOpen(!open)}
-        className="absolute -right-10 top-4 p-2 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 shadow rounded-lg"
+        className="absolute -right-10 top-4 rounded-md border border-slate-200 bg-white p-2 text-slate-900 shadow dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
       >
         <Menu size={20} />
       </button>
 
       <div className="p-4">
 
-        <h2 className="text-xl font-bold mb-8 text-green-500">
+        <h2 className="mb-8 text-xl font-bold text-emerald-600 dark:text-emerald-400">
           AWOL
         </h2>
 
@@ -70,14 +70,14 @@ export default function Sidebar({ open, setOpen }: any) {
                   className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition
                   ${
                     active
-                      ? "bg-green-500 text-white shadow-lg shadow-green-500/40"
-                      : "text-gray-700 hover:bg-green-50 dark:text-gray-200 dark:hover:bg-green-900/20"
+                      ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/25"
+                      : "text-slate-700 hover:bg-emerald-50 dark:text-slate-200 dark:hover:bg-emerald-950/40"
                   }`}
                 >
 
                   <motion.div
                     whileHover={{ scale: 1.3 }}
-                    className={active ? "text-white" : "text-green-600 dark:text-green-400"}
+                    className={active ? "text-white" : "text-emerald-600 dark:text-emerald-400"}
                   >
                     <Icon size={18} />
                   </motion.div>

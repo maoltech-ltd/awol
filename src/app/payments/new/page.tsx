@@ -7,6 +7,11 @@ import { RootState } from "@/src/redux/store";
 import { useAppDispatch } from "@/src/redux/hooks/dispatch";
 import { addPayment } from "@/src/redux/slice/awol/paymentSlice";
 
+const inputClass =
+  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-950 outline-none transition focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:border-emerald-400";
+const labelClass = "font-medium text-slate-700 dark:text-slate-200";
+const hintClass = "text-sm text-slate-500 dark:text-slate-400";
+
 export default function NewPayment() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -73,70 +78,55 @@ export default function NewPayment() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-10 px-4">
+    <div className="min-h-screen bg-slate-50 px-4 py-10 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <form
         onSubmit={submit}
-        className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg space-y-6"
+        className="mx-auto max-w-2xl space-y-6 rounded-lg border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
       >
-        <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
+        <h1 className="text-2xl font-semibold text-slate-950 dark:text-white">
           Record Payment
         </h1>
 
         {error && (
-          <div className="bg-red-100 text-red-600 p-3 rounded">
+          <div className="rounded-md bg-red-50 p-3 text-red-700 dark:bg-red-950/40 dark:text-red-300">
             {error}
           </div>
         )}
 
-        {/* CONTRACT ID */}
         <div>
-          <label className="font-medium text-gray-700 dark:text-gray-200">
-            Contract ID
-          </label>
-          <p className="text-sm text-gray-500">
-            Enter the ID of the customer’s active contract.
-          </p>
+          <label className={labelClass}>Contract ID</label>
+          <p className={hintClass}>Enter the ID of the customer's active contract.</p>
           <input
             type="number"
-            className="w-full border px-3 py-2 rounded bg-transparent text-gray-800 dark:text-white"
+            className={inputClass}
             value={sale}
             onChange={(e) => setSale(e.target.value)}
           />
         </div>
 
-        {/* AMOUNT */}
         <div>
-          <label className="font-medium text-gray-700 dark:text-gray-200">
-            Amount Paid
-          </label>
-          <p className="text-sm text-gray-500">
-            Enter the amount the customer is paying now.
-          </p>
+          <label className={labelClass}>Amount Paid</label>
+          <p className={hintClass}>Enter the amount the customer is paying now.</p>
           <input
             type="number"
-            className="w-full border px-3 py-2 rounded bg-transparent text-gray-800 dark:text-white"
+            className={inputClass}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
 
           {Number(amount) > 0 && (
-            <p className="text-sm text-blue-600 mt-1">
+            <p className="mt-1 text-sm text-blue-600 dark:text-blue-300">
               {currency.format(Number(amount))}
             </p>
           )}
         </div>
 
-        {/* PAYMENT METHOD */}
         <div>
-          <label className="font-medium text-gray-700 dark:text-gray-200">
-            Payment Method
-          </label>
-          <p className="text-sm text-gray-500">
-            Select how the customer made this payment.
-          </p>
+          <label className={labelClass}>Payment Method</label>
+          <p className={hintClass}>Select how the customer made this payment.</p>
 
           <select
-            className="w-full border px-3 py-2 rounded bg-transparent text-gray-800 dark:text-white"
+            className={inputClass}
             value={method}
             onChange={(e) => setMethod(e.target.value)}
           >
@@ -146,13 +136,10 @@ export default function NewPayment() {
           </select>
         </div>
 
-        {/* NOTES */}
         <div>
-          <label className="font-medium text-gray-700 dark:text-gray-200">
-            Notes (Optional)
-          </label>
+          <label className={labelClass}>Notes (Optional)</label>
           <textarea
-            className="w-full border px-3 py-2 rounded bg-transparent text-gray-800 dark:text-white"
+            className={inputClass}
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -161,7 +148,7 @@ export default function NewPayment() {
 
         <button
           disabled={loading}
-          className="w-full bg-black dark:bg-white text-white dark:text-black py-3 rounded font-medium hover:opacity-90 transition"
+          className="w-full rounded-md bg-slate-950 py-3 font-medium text-white transition hover:bg-slate-800 disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           {loading ? "Saving Payment..." : "Save Payment"}
         </button>

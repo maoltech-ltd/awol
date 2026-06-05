@@ -16,7 +16,7 @@ export default function Header() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
       // className="w-full h-16 border-b backdrop-blur-md bg-white/70 dark:bg-black/70 dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-40"
-      className="w-full h-16 backdrop-blur-md bg-white/70 dark:bg-black/70 shadow-md dark:shadow-lg flex items-center justify-between px-6 sticky top-0 z-40"
+      className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/85 px-6 text-slate-900 shadow-sm backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/85 dark:text-slate-100"
     >
       {/* Logo */}
       <Logo user={user} />
@@ -28,7 +28,7 @@ export default function Header() {
         <motion.button
           whileHover={{ scale: 1.15 }}
           whileTap={{ scale: 0.9 }}
-          className="p-2 rounded-xl hover:bg-gray-100 dark:text-light dark:hover:bg-gray-800 transition"
+          className="rounded-md p-2 text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           <Bell size={20} />
         </motion.button>
@@ -38,7 +38,7 @@ export default function Header() {
           whileHover={{ rotate: 20, scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setMode(mode === "light" ? "dark" : "light")}
-          className="p-2 rounded-xl hover:bg-gray-100 dark:text-light dark:hover:bg-gray-800 transition"
+          className="rounded-md p-2 text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           {mode === "light" ? <Moon size={18} /> : <Sun size={18} />}
         </motion.button>
@@ -46,7 +46,7 @@ export default function Header() {
         {/* Username */}
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className="text-sm font-semibold dark:text-light"
+          className="text-sm font-semibold text-slate-800 dark:text-slate-100"
         >
           {user?.username || "Admin"}
         </motion.div>

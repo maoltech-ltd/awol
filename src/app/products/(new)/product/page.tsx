@@ -93,15 +93,15 @@ export default function NewProduct() {
       onSubmit={submit}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6 space-y-5 max-w-xl mx-auto bg-white rounded-2xl shadow-lg"
+      className="mx-auto max-w-xl space-y-5 rounded-lg border border-slate-200 bg-white p-6 text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
     >
-      <h1 className="text-2xl font-bold text-green-700">Add Product</h1>
+      <h1 className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">Add Product</h1>
 
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300">{error}</div>}
 
       {/* Name */}
       <input
-        className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-green-400 outline-none"
+        className="w-full rounded-md border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400"
         placeholder="Product Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -110,7 +110,7 @@ export default function NewProduct() {
 
       {/* Description */}
       <textarea
-        className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-green-400 outline-none"
+        className="w-full rounded-md border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400"
         placeholder="Product Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -119,7 +119,7 @@ export default function NewProduct() {
       {/* Dropdown */}
       <div className="relative" ref={dropdownRef}>
         <input
-          className="w-full px-4 py-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-green-400 outline-none"
+          className="w-full rounded-md border border-slate-300 bg-white px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400"
           placeholder="Search company..."
           value={selectedCompany ? selectedCompany.name : search}
           onFocus={() => setOpen(true)}
@@ -133,7 +133,7 @@ export default function NewProduct() {
           <div
             ref={listRef}
             onScroll={handleScroll}
-            className="absolute z-50 mt-2 w-full bg-white rounded-xl shadow-xl max-h-60 overflow-y-auto"
+            className="absolute z-50 mt-2 max-h-60 w-full overflow-y-auto rounded-lg border border-slate-200 bg-white text-slate-900 shadow-xl dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           >
             {companies.map((c) => (
               <div
@@ -142,20 +142,20 @@ export default function NewProduct() {
                   setSelectedCompany(c);
                   setOpen(false);
                 }}
-                className="p-3 hover:bg-green-50 cursor-pointer"
+                className="cursor-pointer p-3 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
               >
                 {c.name}
               </div>
             ))}
 
             {status === "loading" && (
-              <div className="p-3 text-center text-gray-400">Loading...</div>
+              <div className="p-3 text-center text-slate-500 dark:text-slate-400">Loading...</div>
             )}
           </div>
         )}
       </div>
 
-      <button className="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition">
+      <button className="w-full rounded-md bg-emerald-700 py-3 font-semibold text-white shadow-sm transition hover:bg-emerald-800 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400">
         Save Product
       </button>
     </motion.form>

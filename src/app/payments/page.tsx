@@ -58,6 +58,8 @@ export default function PaymentsPage() {
     style: "currency",
     currency: "NGN",
   });
+  const inputClass =
+    "rounded-md border border-slate-300 bg-white px-4 py-3 text-slate-950 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400";
   
 
   if (status === "loading") {
@@ -83,9 +85,9 @@ export default function PaymentsPage() {
 
   if(status === "succeeded" ) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-100 dark:from-gray-950 dark:via-green-950/20 dark:to-gray-900 p-6">
+      <div className="min-h-screen bg-slate-50 p-6 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
 
-        <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">
+        <h1 className="mb-8 text-3xl font-bold text-slate-950 dark:text-white">
           Payments
         </h1>
 
@@ -103,32 +105,30 @@ export default function PaymentsPage() {
               placeholder={f.placeholder}
               value={f.value}
               onChange={(e) => f.set(e.target.value)}
-              className="px-4 py-3 rounded-xl bg-white/70 dark:bg-gray-800/70 
-              backdrop-blur shadow-md focus:outline-none focus:ring-2 
-              focus:ring-green-400 transition"
+              className={inputClass}
             />
           ))}
 
           <input type="number" placeholder="Min Amount"
-            className="input-green"
+            className={inputClass}
             value={minAmount}
             onChange={(e) => setMinAmount(e.target.value)}
           />
 
           <input type="number" placeholder="Max Amount"
-            className="input-green"
+            className={inputClass}
             value={maxAmount}
             onChange={(e) => setMaxAmount(e.target.value)}
           />
 
-          <input type="date" className="input-green" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-          <input type="date" className="input-green" value={toDate} onChange={(e) => setToDate(e.target.value)} />
+          <input type="date" className={inputClass} value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+          <input type="date" className={inputClass} value={toDate} onChange={(e) => setToDate(e.target.value)} />
         </div>
 
         {/* TABLE */}
-        <div className="rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur shadow-xl overflow-hidden">
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <table className="w-full">
-            <thead className="bg-green-100 dark:bg-green-900/30 text-gray-700 dark:text-gray-200">
+            <thead className="bg-emerald-50 text-slate-700 dark:bg-emerald-950/40 dark:text-slate-200">
               <tr>
                 <th className="p-4">Customer</th>
                 <th className="p-4">Product</th>
@@ -140,16 +140,16 @@ export default function PaymentsPage() {
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200">
               {payments.map((p: any) => (
                 <tr
                   key={p.id}
-                  className="hover:bg-green-50 dark:hover:bg-green-900/20 transition cursor-pointer"
+                  className="cursor-pointer transition hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
                 >
                   <td className="p-4">{p.customer_name}</td>
                   <td className="p-4">{p.product_name} - {p.model_name}</td>
 
-                  <td className="p-4 font-semibold text-green-600">
+                  <td className="p-4 font-semibold text-emerald-700 dark:text-emerald-300">
                     {currency.format(p.amount_paid)}
                   </td>
 
@@ -160,7 +160,7 @@ export default function PaymentsPage() {
                   <td className="p-4">
                     <button
                       onClick={() => setSelectedPayment(p)}
-                      className="text-green-600 hover:text-green-800 font-medium"
+                      className="font-medium text-emerald-700 hover:text-emerald-900 dark:text-emerald-300 dark:hover:text-emerald-200"
                     >
                       View
                     </button>
@@ -174,7 +174,7 @@ export default function PaymentsPage() {
         {/* MODAL */}
         {selectedPayment && (
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-end z-50">
-            <div className="w-full md:w-[400px] bg-white dark:bg-gray-900 p-6 shadow-2xl animate-slideIn">
+            <div className="w-full bg-white p-6 text-slate-900 shadow-2xl dark:bg-slate-900 dark:text-slate-100 md:w-[400px]">
 
               <button
                 onClick={() => setSelectedPayment(null)}
@@ -183,13 +183,13 @@ export default function PaymentsPage() {
                 Close
               </button>
 
-              <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
+              <h2 className="mb-4 text-xl font-semibold text-slate-950 dark:text-white">Payment Details</h2>
 
-              <div className="space-y-2 text-gray-700 dark:text-gray-300">
+              <div className="space-y-2 text-slate-700 dark:text-slate-300">
                 <p><b>Customer:</b> {selectedPayment.customer_name}</p>
                 <p><b>Product:</b> {selectedPayment.product_name}</p>
                 <p><b>Model:</b> {selectedPayment.model_name}</p>
-                <p className="text-green-600 font-bold">
+                <p className="font-bold text-emerald-700 dark:text-emerald-300">
                   {currency.format(selectedPayment.amount_paid)}
                 </p>
                 <p><b>Method:</b> {selectedPayment.method}</p>
@@ -212,7 +212,7 @@ export default function PaymentsPage() {
                 })
               )
             }
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+            className="rounded-md bg-slate-200 px-4 py-2 text-slate-800 disabled:opacity-50 dark:bg-slate-800 dark:text-slate-100"
           >
             Previous
           </button>
@@ -227,17 +227,12 @@ export default function PaymentsPage() {
                 })
               )
             }
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+            className="rounded-md bg-slate-200 px-4 py-2 text-slate-800 disabled:opacity-50 dark:bg-slate-800 dark:text-slate-100"
           >
             Next
           </button>
         </div>
 
-        <style jsx>{`
-          .filter-input {
-            @apply border px-3 py-2 rounded bg-white dark:bg-gray-800 dark:text-white;
-          }
-        `}</style>
       </div>
     );
   }
