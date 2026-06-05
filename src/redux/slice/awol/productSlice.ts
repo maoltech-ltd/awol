@@ -1,10 +1,10 @@
 import api from "@/src/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { stat } from "fs";
 
 export interface Product {
     id: number;
     name: string;
+    description?: string;
     company: number;
 
 }
@@ -22,6 +22,10 @@ export interface ProductModel {
     other_images: string[];
     features: Record<string, string>;
     stock_quantity: number;
+    is_available?: boolean;
+    is_featured?: boolean;
+    product_name?: string;
+    company_name?: string;
 }
 
 interface ProductState {
