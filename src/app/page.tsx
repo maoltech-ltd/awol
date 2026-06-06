@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Zap, BatteryCharging, Sun, X } from "lucide-react"
@@ -8,12 +8,47 @@ import { Zap, BatteryCharging, Sun, X } from "lucide-react"
 export default function LandingPage() {
 
   const [modal, setModal] = useState<null | string>(null)
+  const [successMessage, setSuccessMessage] = useState("")
 
   const openModal = (type: string) => setModal(type)
   const closeModal = () => setModal(null)
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const redirectedAfterRegistration = params.get("registration") === "success"
+    const storedMessage = window.sessionStorage.getItem("awolRegistrationSuccessMessage")
+
+    if (redirectedAfterRegistration || storedMessage) {
+      setSuccessMessage(
+        storedMessage || "Your registration has been submitted successfully. AWOL will contact you shortly."
+      )
+      window.sessionStorage.removeItem("awolRegistrationSuccessMessage")
+
+      if (redirectedAfterRegistration) {
+        window.history.replaceState({}, "", window.location.pathname)
+      }
+    }
+  }, [])
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-gray-200 dark:from-black dark:via-gray-950 dark:to-black text-gray-900 dark:text-white overflow-x-hidden">
+
+      {successMessage && (
+        <div className="fixed left-1/2 top-6 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 rounded-lg border border-emerald-200 bg-white p-4 text-emerald-800 shadow-xl dark:bg-white dark:text-emerald-800">
+          <div className="flex items-start gap-3">
+            <div className="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            <p className="flex-1 text-sm font-medium leading-6">{successMessage}</p>
+            <button
+              type="button"
+              onClick={() => setSuccessMessage("")}
+              className="rounded p-1 text-emerald-700 hover:bg-emerald-50"
+              aria-label="Dismiss success message"
+            >
+              <X size={18} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* HERO */}
       <section className="max-w-7xl mx-auto px-6 pt-28 pb-24 grid lg:grid-cols-2 gap-14 items-center">
@@ -65,11 +100,11 @@ export default function LandingPage() {
 
           <div className="absolute inset-0 bg-green-500 blur-3xl opacity-20 rounded-full"></div>
 
-          <div className="relative bg-white/60 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-gray-800 p-10 rounded-3xl shadow-2xl">
+          <div className="relative bg-white/60 text-gray-900 dark:bg-white/5 dark:text-gray-100 backdrop-blur-xl border border-gray-200 dark:border-gray-800 p-10 rounded-3xl shadow-2xl">
 
             <div className="flex justify-between items-center mb-6">
               <Zap className="text-green-500 w-8 h-8" />
-              <span className="text-sm text-gray-500">AWOL Technology</span>
+              <span className="text-sm text-gray-500 dark:text-gray-300">AWOL Technology</span>
             </div>
 
             <h3 className="text-2xl font-bold">
@@ -118,16 +153,16 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * .2 }}
-              className="p-8 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl"
+              className="p-8 rounded-2xl bg-white text-gray-900 dark:bg-white dark:text-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl"
             >
 
               <Icon className="w-10 h-10 text-green-500 mb-5" />
 
-              <h3 className="text-xl font-semibold dark:text-gray-100">
+              <h3 className="text-xl font-semibold dark:text-gray-900">
                 {item.title}
               </h3>
 
-              <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm">
+              <p className="mt-3 text-gray-600 dark:text-gray-600 text-sm">
                 {item.desc}
               </p>
 
@@ -160,13 +195,13 @@ export default function LandingPage() {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
+              className="p-10 rounded-2xl bg-white text-gray-900 dark:bg-white dark:text-gray-900 shadow-xl"
             >
-              <h3 className="text-2xl font-bold dark:text-gray-100">
+              <h3 className="text-2xl font-bold dark:text-gray-900">
                 Instant Payment
               </h3>
 
-              <p className="mt-4 text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-gray-600 dark:text-gray-600">
                 Purchase your products immediately and enjoy full ownership
                 right away with exclusive purchase benefits.
               </p>
@@ -203,13 +238,13 @@ export default function LandingPage() {
 
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="p-10 rounded-2xl bg-white dark:bg-gray-900 shadow-xl"
+              className="p-10 rounded-2xl bg-white text-gray-900 dark:bg-white dark:text-gray-900 shadow-xl"
             >
-              <h3 className="text-2xl font-bold dark:text-gray-100">
+              <h3 className="text-2xl font-bold dark:text-gray-900">
                 Solar Power Calculator
               </h3>
 
-              <p className="mt-4 text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-gray-600 dark:text-gray-600">
                 Estimate the battery and solar panel power you need for your home appliances.
                 Choose items like TV, fan, fridge, laptop, and more, then calculate required
                 energy to match your desired backup duration.
@@ -304,7 +339,7 @@ export default function LandingPage() {
               initial={{ scale: .8 }}
               animate={{ scale: 1 }}
               exit={{ scale: .8 }}
-              className="bg-white dark:bg-gray-900 max-w-lg w-full p-8 rounded-2xl shadow-2xl relative"
+              className="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 max-w-lg w-full p-8 rounded-2xl shadow-2xl relative"
             >
 
               <button

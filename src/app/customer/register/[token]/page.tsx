@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { BadgeCheck, BatteryCharging, CreditCard, ShoppingBag } from "lucide-react";
 import api from "@/src/api";
 
@@ -63,6 +63,7 @@ const formatMoney = (value?: number | string) =>
 
 export default function CustomerInviteRegistrationPage() {
   const params = useParams<{ token: string }>();
+  const router = useRouter();
   const token = params.token;
 
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -72,6 +73,7 @@ export default function CustomerInviteRegistrationPage() {
   const [quote, setQuote] = useState<any>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "submitting" | "success" | "error">("loading");
   const [message, setMessage] = useState("");
+  const [agreementAccepted, setAgreementAccepted] = useState(false);
 
   const models = useMemo(
     () =>
@@ -168,6 +170,10 @@ export default function CustomerInviteRegistrationPage() {
       setMessage("Please select a product model.");
       return;
     }
+    if (!agreementAccepted) {
+      setMessage("Please read and accept the customer agreement before submitting.");
+      return;
+    }
 
     setStatus("submitting");
     setMessage("");
@@ -197,6 +203,13 @@ export default function CustomerInviteRegistrationPage() {
           ? `Application submitted. Decision: ${res.data?.credit_application?.status || "review"}.`
           : "Registration submitted. AWOL will contact you shortly."
       );
+      window.sessionStorage.setItem(
+        "awolRegistrationSuccessMessage",
+        purchaseType === "credit"
+          ? "Your Easy Buy application has been submitted successfully. AWOL will review your details and contact you shortly."
+          : "Your registration has been submitted successfully. AWOL will contact you shortly."
+      );
+      router.push("/?registration=success");
     } catch (error: any) {
       setStatus("ready");
       setMessage(error?.response?.data ? JSON.stringify(error.response.data) : "Registration failed. Check your details and try again.");
@@ -317,7 +330,7 @@ export default function CustomerInviteRegistrationPage() {
                   <option value="other">Other</option>
                 </select>
                 <input placeholder="Employer or business name" value={form.employer_name} onChange={(event) => updateForm("employer_name", event.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
-                <input required type="number" placeholder="Monthly income" value={form.monthly_income} onChange={(event) => updateForm("monthly_income", event.target.value)} onBlur={() => fetchQuote()} className="h-11 rounded-md border border-emerald-200 px-3" />
+                <input type="number" placeholder="Monthly income" value={form.monthly_income} onChange={(event) => updateForm("monthly_income", event.target.value)} onBlur={() => fetchQuote()} className="h-11 rounded-md border border-emerald-200 px-3" />
                 <input type="number" placeholder="Existing monthly debt" value={form.monthly_existing_debt} onChange={(event) => updateForm("monthly_existing_debt", event.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
                 <input type="number" placeholder="Down payment" value={form.requested_down_payment} onChange={(event) => updateForm("requested_down_payment", event.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
                 <input type="number" placeholder="Months" value={form.requested_months} onChange={(event) => updateForm("requested_months", event.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
@@ -346,6 +359,26 @@ export default function CustomerInviteRegistrationPage() {
               {message}
             </div>
           )}
+
+          <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+            <h3 className="font-semibold text-slate-950">Customer Agreement</h3>
+            <p className="mt-2">
+              I confirm that the information I provided is true and complete. I authorize AWOL to contact me about this purchase, verify my details where required, and use my information to process this registration or Easy Buy application.
+            </p>
+            <p className="mt-2">
+              I understand that product availability, pricing, payment terms, and Easy Buy approval are subject to AWOL confirmation. Submitting this form does not guarantee credit approval or product reservation until AWOL confirms it.
+            </p>
+            <label className="mt-3 flex items-start gap-3 font-medium text-slate-900">
+              <input
+                required
+                type="checkbox"
+                checked={agreementAccepted}
+                onChange={(event) => setAgreementAccepted(event.target.checked)}
+                className="mt-1"
+              />
+              <span>I have read and agree to the customer agreement.</span>
+            </label>
+          </div>
 
           <button disabled={status === "submitting" || status === "success"} className="mt-5 w-full rounded-md bg-slate-950 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">
             {status === "submitting" ? "Submitting..." : "Submit Registration"}

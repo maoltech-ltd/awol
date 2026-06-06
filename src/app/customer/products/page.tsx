@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   BadgeCheck,
   BatteryCharging,
@@ -86,6 +87,7 @@ const emptyForm = {
 };
 
 export default function ProductsPage() {
+  const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selected, setSelected] = useState<ProductModel | null>(null);
   const [mode, setMode] = useState<RegistrationMode>("cash");
@@ -99,6 +101,7 @@ export default function ProductsPage() {
   const [quote, setQuote] = useState<any>(null);
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [agreementAccepted, setAgreementAccepted] = useState(false);
 
   const models = useMemo(
     () =>
@@ -138,6 +141,7 @@ export default function ProductsPage() {
     setQuote(null);
     setSubmitState("idle");
     setMessage("");
+    setAgreementAccepted(false);
   }, [selected, mode]);
 
   async function fetchQuote(nextForm = form) {
@@ -168,6 +172,11 @@ export default function ProductsPage() {
   async function submitRegistration(event: FormEvent) {
     event.preventDefault();
     if (!selected) return;
+    if (!agreementAccepted) {
+      setSubmitState("error");
+      setMessage("Please read and accept the customer agreement before submitting.");
+      return;
+    }
 
     setSubmitState("loading");
     setMessage("");
@@ -198,6 +207,13 @@ export default function ProductsPage() {
           : "Your interest has been registered. AWOL will contact you shortly."
       );
       setQuote(res.data?.quote || quote);
+      window.sessionStorage.setItem(
+        "awolRegistrationSuccessMessage",
+        mode === "credit"
+          ? "Your Easy Buy application has been submitted successfully. AWOL will review your details and contact you shortly."
+          : "Your registration has been submitted successfully. AWOL will contact you shortly."
+      );
+      router.push("/?registration=success");
     } catch (error: any) {
       setSubmitState("error");
       setMessage(error?.response?.data ? JSON.stringify(error.response.data) : "Registration failed. Check your details and try again.");
@@ -406,7 +422,7 @@ export default function ProductsPage() {
                           <option value="other">Other</option>
                         </select>
                         <input placeholder="Employer or business name" value={form.employer_name} onChange={(e) => updateForm("employer_name", e.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
-                        <input required type="number" placeholder="Monthly income" value={form.monthly_income} onChange={(e) => updateForm("monthly_income", e.target.value)} onBlur={() => fetchQuote()} className="h-11 rounded-md border border-emerald-200 px-3" />
+                        <input type="number" placeholder="Monthly income" value={form.monthly_income} onChange={(e) => updateForm("monthly_income", e.target.value)} onBlur={() => fetchQuote()} className="h-11 rounded-md border border-emerald-200 px-3" />
                         <input type="number" placeholder="Existing monthly debt" value={form.monthly_existing_debt} onChange={(e) => updateForm("monthly_existing_debt", e.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
                         <input type="number" placeholder="Down payment" value={form.requested_down_payment} onChange={(e) => updateForm("requested_down_payment", e.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
                         <input type="number" placeholder="Months" value={form.requested_months} onChange={(e) => updateForm("requested_months", e.target.value)} className="h-11 rounded-md border border-emerald-200 px-3" />
@@ -440,6 +456,26 @@ export default function ProductsPage() {
                       {message}
                     </div>
                   )}
+
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+                    <h3 className="font-semibold text-slate-950">Customer Agreement</h3>
+                    <p className="mt-2">
+                      I confirm that the information I provided is true and complete. I authorize AWOL to contact me about this purchase, verify my details where required, and use my information to process this registration or Easy Buy application.
+                    </p>
+                    <p className="mt-2">
+                      I understand that product availability, pricing, payment terms, and Easy Buy approval are subject to AWOL confirmation. Submitting this form does not guarantee credit approval or product reservation until AWOL confirms it.
+                    </p>
+                    <label className="mt-3 flex items-start gap-3 font-medium text-slate-900">
+                      <input
+                        required
+                        type="checkbox"
+                        checked={agreementAccepted}
+                        onChange={(event) => setAgreementAccepted(event.target.checked)}
+                        className="mt-1"
+                      />
+                      <span>I have read and agree to the customer agreement.</span>
+                    </label>
+                  </div>
 
                   <div className="flex flex-wrap gap-3">
                     <button disabled={submitState === "loading"} className="inline-flex items-center gap-2 rounded-md bg-slate-950 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60">
