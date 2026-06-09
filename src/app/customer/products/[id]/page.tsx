@@ -342,10 +342,14 @@ export default function ProductDetailPage() {
 
           <ProductShareButtons url={productUrl} title={`AWOL product: ${product.model_name}`} />
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <div className="mt-5 grid gap-3 sm:grid-cols-4">
             <div className="rounded-md border border-slate-200 p-3">
               <div className="text-xs text-slate-500">Cash price</div>
               <div className="mt-1 font-semibold">{formatMoney(product.cash_price)}</div>
+            </div>
+            <div className="rounded-md border border-slate-200 p-3">
+              <div className="text-xs text-slate-500">Easy Buy total</div>
+              <div className="mt-1 font-semibold">{product.installment_allowed ? formatMoney(product.installment_price) : "N/A"}</div>
             </div>
             <div className="rounded-md border border-slate-200 p-3">
               <div className="text-xs text-slate-500">Down payment</div>
@@ -446,12 +450,28 @@ export default function ProductDetailPage() {
 
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
               <h2 className="font-semibold text-slate-950">Customer Agreement</h2>
-              <p className="mt-2">
-                I confirm that the information I provided is true and complete. I authorize AWOL to contact me about this purchase, verify my details where required, and use my information to process this registration or Easy Buy application.
-              </p>
-              <p className="mt-2">
-                I understand that product availability, pricing, payment terms, and Easy Buy approval are subject to AWOL confirmation. Submitting this form does not guarantee credit approval or product reservation until AWOL confirms it.
-              </p>
+              {mode === "credit" ? (
+                <>
+                  <p className="mt-2">
+                    I confirm that the information I provided is true and complete. I authorize AWOL to contact me, verify my identity, income, guarantor details, and other information needed to process this Easy Buy application.
+                  </p>
+                  <p className="mt-2">
+                    I understand that Easy Buy approval, down payment, monthly payment, due dates, and product availability are subject to AWOL confirmation. I agree to make payments on time after approval.
+                  </p>
+                  <p className="mt-2 font-medium text-slate-900">
+                    I understand that if I fail to meet the agreed payment schedule, AWOL may recover or take back the product according to the final Easy Buy agreement.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="mt-2">
+                    I confirm that the information I provided is true and complete. I authorize AWOL to contact me about this cash purchase and use my information to process this registration.
+                  </p>
+                  <p className="mt-2">
+                    I understand that product availability and cash pricing are subject to AWOL confirmation. Submitting this form does not reserve the product until AWOL confirms it.
+                  </p>
+                </>
+              )}
               <label className="mt-3 flex items-start gap-3 font-medium text-slate-900">
                 <input
                   required

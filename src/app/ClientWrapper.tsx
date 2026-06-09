@@ -49,7 +49,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const publicPathPrefixes = ["/customer/register/"];
+  const publicPathPrefixes = ["/customer/"];
   const excludePaths = ["/signin", "/signup", "/", "/customer/products", "/customer/solar/calculator"];
   const excludePathsSidebar = ["/signin", "/signup", "/", "/customer/products", "/customer/solar/calculator"];
 

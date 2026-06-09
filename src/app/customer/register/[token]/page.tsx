@@ -69,6 +69,13 @@ export default function CustomerInviteRegistrationPage() {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [selectedModelId, setSelectedModelId] = useState("");
+  const [fixedModelId, setFixedModelId] = useState("");
+  const [invitePricing, setInvitePricing] = useState({
+    custom_cash_price: null as number | string | null,
+    custom_installment_price: null as number | string | null,
+    custom_down_payment: null as number | string | null,
+    custom_installment_months: null as number | string | null,
+  });
   const [purchaseType, setPurchaseType] = useState<"cash" | "credit">("cash");
   const [quote, setQuote] = useState<any>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "submitting" | "success" | "error">("loading");
@@ -89,10 +96,18 @@ export default function CustomerInviteRegistrationPage() {
     [companies]
   );
 
-  const selectedModel = useMemo(
-    () => models.find((model) => String(model.id) === selectedModelId) || null,
-    [models, selectedModelId]
-  );
+  const selectedModel = useMemo(() => {
+    const model = models.find((item) => String(item.id) === selectedModelId);
+    if (!model) return null;
+
+    return {
+      ...model,
+      cash_price: invitePricing.custom_cash_price ?? model.cash_price,
+      installment_price: invitePricing.custom_installment_price ?? model.installment_price,
+      down_payment: invitePricing.custom_down_payment ?? model.down_payment,
+      installment_months: invitePricing.custom_installment_months ?? model.installment_months,
+    };
+  }, [models, selectedModelId, invitePricing]);
 
   useEffect(() => {
     async function load() {
@@ -115,6 +130,20 @@ export default function CustomerInviteRegistrationPage() {
           phone: invite.phone || "",
           email: invite.email || "",
         }));
+        if (invite.selected_product_model?.id) {
+          const modelId = String(invite.selected_product_model.id);
+          setSelectedModelId(modelId);
+          setFixedModelId(modelId);
+        }
+        if (invite.purchase_type === "cash" || invite.purchase_type === "credit") {
+          setPurchaseType(invite.purchase_type);
+        }
+        setInvitePricing({
+          custom_cash_price: invite.custom_cash_price ?? null,
+          custom_installment_price: invite.custom_installment_price ?? null,
+          custom_down_payment: invite.custom_down_payment ?? null,
+          custom_installment_months: invite.custom_installment_months ?? null,
+        });
         setCompanies(companiesRes.data || []);
         setStatus("ready");
       } catch {
@@ -152,6 +181,7 @@ export default function CustomerInviteRegistrationPage() {
 
     try {
       const res = await api.post("v1/customer-awol/credit/quote/", {
+        invite_token: token,
         product_model: selectedModel.id,
         down_payment: Number(nextForm.requested_down_payment || selectedModel.down_payment || 0),
         months: Number(nextForm.requested_months || selectedModel.installment_months || 1),
@@ -238,6 +268,7 @@ export default function CustomerInviteRegistrationPage() {
             required
             value={selectedModelId}
             onChange={(event) => setSelectedModelId(event.target.value)}
+            disabled={Boolean(fixedModelId)}
             className="mt-5 h-11 w-full rounded-md border border-slate-200 bg-white px-3 outline-none focus:border-emerald-500"
           >
             <option value="">Select product model</option>
@@ -272,6 +303,11 @@ export default function CustomerInviteRegistrationPage() {
                     <div className="font-semibold">{selectedModel.installment_allowed ? `${selectedModel.installment_months} months` : "Cash only"}</div>
                   </div>
                 </div>
+                {fixedModelId && (
+                  <div className="mt-3 rounded-md bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800">
+                    This price was set specifically for this customer link.
+                  </div>
+                )}
               </div>
 
               {selectedModel.features && Object.keys(selectedModel.features).length > 0 && (
@@ -362,12 +398,28 @@ export default function CustomerInviteRegistrationPage() {
 
           <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
             <h3 className="font-semibold text-slate-950">Customer Agreement</h3>
-            <p className="mt-2">
-              I confirm that the information I provided is true and complete. I authorize AWOL to contact me about this purchase, verify my details where required, and use my information to process this registration or Easy Buy application.
-            </p>
-            <p className="mt-2">
-              I understand that product availability, pricing, payment terms, and Easy Buy approval are subject to AWOL confirmation. Submitting this form does not guarantee credit approval or product reservation until AWOL confirms it.
-            </p>
+            {purchaseType === "credit" ? (
+              <>
+                <p className="mt-2">
+                  I confirm that the information I provided is true and complete. I authorize AWOL to contact me, verify my identity, income, guarantor details, and other information needed to process this Easy Buy application.
+                </p>
+                <p className="mt-2">
+                  I understand that Easy Buy approval, down payment, monthly payment, due dates, and product availability are subject to AWOL confirmation. I agree to make payments on time after approval.
+                </p>
+                <p className="mt-2 font-medium text-slate-900">
+                  I understand that if I fail to meet the agreed payment schedule, AWOL may recover or take back the product according to the final Easy Buy agreement.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="mt-2">
+                  I confirm that the information I provided is true and complete. I authorize AWOL to contact me about this cash purchase and use my information to process this registration.
+                </p>
+                <p className="mt-2">
+                  I understand that product availability and cash pricing are subject to AWOL confirmation. Submitting this form does not reserve the product until AWOL confirms it.
+                </p>
+              </>
+            )}
             <label className="mt-3 flex items-start gap-3 font-medium text-slate-900">
               <input
                 required

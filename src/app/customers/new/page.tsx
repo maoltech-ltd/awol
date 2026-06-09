@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/src/redux/hooks/dispatch";
 import { addCustomer, createCustomerInvite } from "@/src/redux/slice/awol/customerSlice";
 import { RootState } from "@/src/redux/store";
+import api from "@/src/api";
 
 type Mode = "direct" | "invite";
 
@@ -43,7 +44,15 @@ export default function NewCustomerPage() {
     phone: "",
     email: "",
     note: "",
+    selected_product_model: "",
+    custom_cash_price: "",
+    custom_installment_price: "",
+    custom_down_payment: "",
+    custom_installment_months: "",
   });
+  const [products, setProducts] = useState<any[]>([]);
+  const [productModels, setProductModels] = useState<any[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState("");
   const [publicUrl, setPublicUrl] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,12 +62,62 @@ export default function NewCustomerPage() {
     setMode(params.get("mode") === "invite" ? "invite" : "direct");
   }, []);
 
+  useEffect(() => {
+    if (!user?.token || mode !== "invite") return;
+
+    api
+      .get("v1/awol/products/?page=1", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((res) => setProducts(res.data.results || res.data || []))
+      .catch(() => setProducts([]));
+  }, [user?.token, mode]);
+
+  useEffect(() => {
+    if (!user?.token || !selectedProductId) {
+      setProductModels([]);
+      return;
+    }
+
+    api
+      .get(`v1/awol/products/${selectedProductId}/`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((res) => setProductModels(res.data.models || []))
+      .catch(() => setProductModels([]));
+  }, [user?.token, selectedProductId]);
+
   function updateDirect(name: string, value: string) {
     setDirectForm((current) => ({ ...current, [name]: value }));
   }
 
   function updateInvite(name: string, value: string) {
     setInviteForm((current) => ({ ...current, [name]: value }));
+  }
+
+  function selectProduct(productId: string) {
+    setSelectedProductId(productId);
+    setProductModels([]);
+    setInviteForm((current) => ({
+      ...current,
+      selected_product_model: "",
+      custom_cash_price: "",
+      custom_installment_price: "",
+      custom_down_payment: "",
+      custom_installment_months: "",
+    }));
+  }
+
+  function selectProductModel(modelId: string) {
+    const model = productModels.find((item) => String(item.id) === modelId);
+    setInviteForm((current) => ({
+      ...current,
+      selected_product_model: modelId,
+      custom_cash_price: model ? String(model.cash_price || "") : "",
+      custom_installment_price: model ? String(model.installment_price || "") : "",
+      custom_down_payment: model ? String(model.down_payment || "") : "",
+      custom_installment_months: model ? String(model.installment_months || "") : "",
+    }));
   }
 
   async function submitDirect(event: FormEvent) {
@@ -92,7 +151,9 @@ export default function NewCustomerPage() {
         createCustomerInvite({
           token: user.token,
           data: {
-            ...inviteForm,
+            ...Object.fromEntries(
+              Object.entries(inviteForm).filter(([, value]) => value !== "")
+            ),
             frontend_base_url: window.location.origin,
           },
         })
@@ -242,6 +303,50 @@ export default function NewCustomerPage() {
               <label className={labelClass}>Email</label>
               <input type="email" value={inviteForm.email} onChange={(event) => updateInvite("email", event.target.value)} className={inputClass} placeholder="Optional prefill" />
             </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label className={labelClass}>Product</label>
+                <select value={selectedProductId} onChange={(event) => selectProduct(event.target.value)} className={inputClass}>
+                  <option value="">No fixed product</option>
+                  {products.map((product: any) => (
+                    <option key={product.id} value={product.id}>
+                      {product.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className={labelClass}>Model</label>
+                <select value={inviteForm.selected_product_model} onChange={(event) => selectProductModel(event.target.value)} className={inputClass} disabled={!selectedProductId}>
+                  <option value="">Select model</option>
+                  {productModels.map((model: any) => (
+                    <option key={model.id} value={model.id}>
+                      {model.model_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {inviteForm.selected_product_model && (
+              <div className="grid grid-cols-1 gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950 sm:grid-cols-2">
+                <div>
+                  <label className={labelClass}>Cash price</label>
+                  <input type="number" min="1" value={inviteForm.custom_cash_price} onChange={(event) => updateInvite("custom_cash_price", event.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Easy Buy total</label>
+                  <input type="number" min="1" value={inviteForm.custom_installment_price} onChange={(event) => updateInvite("custom_installment_price", event.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Easy Buy down payment</label>
+                  <input type="number" min="0" value={inviteForm.custom_down_payment} onChange={(event) => updateInvite("custom_down_payment", event.target.value)} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>Easy Buy months</label>
+                  <input type="number" min="1" value={inviteForm.custom_installment_months} onChange={(event) => updateInvite("custom_installment_months", event.target.value)} className={inputClass} />
+                </div>
+              </div>
+            )}
             <div>
               <label className={labelClass}>Internal note</label>
               <textarea value={inviteForm.note} onChange={(event) => updateInvite("note", event.target.value)} className={textAreaClass} placeholder="Optional note for staff" />

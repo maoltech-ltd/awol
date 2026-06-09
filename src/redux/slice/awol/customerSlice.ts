@@ -24,6 +24,11 @@ export interface CustomerInvite {
   phone?: string | null;
   email?: string | null;
   note?: string | null;
+  selected_product_model?: number | null;
+  custom_cash_price?: number | string | null;
+  custom_installment_price?: number | string | null;
+  custom_down_payment?: number | string | null;
+  custom_installment_months?: number | string | null;
   status: string;
   public_url: string;
   created_at: string;

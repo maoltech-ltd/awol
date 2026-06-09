@@ -183,7 +183,9 @@ export default function ProductsPage() {
                 <div className="mt-3 flex items-end justify-between gap-3">
                   <div>
                     <div className="text-lg font-semibold text-emerald-700">{formatMoney(model.cash_price)}</div>
-                    <div className="mt-1 text-xs text-slate-500">{model.stock_quantity > 0 ? `${model.stock_quantity} in stock` : "Confirm availability"}</div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      {model.installment_allowed ? `Easy Buy total ${formatMoney(model.installment_price)}` : model.stock_quantity > 0 ? `${model.stock_quantity} in stock` : "Confirm availability"}
+                    </div>
                   </div>
                   {model.installment_allowed && (
                     <div className="rounded-md bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
