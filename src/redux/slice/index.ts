@@ -13,7 +13,6 @@ import paymentReducer from "./awol/paymentSlice";
 import companyReducer from "./awol/companySlice";
 import productReducer from "./awol/productSlice";
 import defaultReducer from "./awol/defaultSlice";
-import {fxReducer, snapshotReducer, equityReducer, etfReducer, bondReducer, headlinesReducer} from "./marketSlice";
 
 export {
     commentReducer,
@@ -23,12 +22,6 @@ export {
     imageReducer,
     secondUserReducer,
     postReducer,
-    fxReducer,
-    snapshotReducer,
-    equityReducer,
-    etfReducer,
-    bondReducer,
-    headlinesReducer,
     bulkCategoryReducer,
     authorReducer,
     customerReducer,

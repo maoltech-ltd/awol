@@ -35,7 +35,7 @@ const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {
   storage,
   timeout: 6000,
   whitelist: ["user", "image", "post"],     // persist ONLY tiny slices (adjust based on your app)
-  blacklist: ["posts", "bulkCategories", "categories", "comments", "fxRates", "secondUser"], // VERY IMPORTANT
+  blacklist: ["posts", "bulkCategories", "categories", "comments", "secondUser"], // VERY IMPORTANT
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
