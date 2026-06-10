@@ -30,9 +30,26 @@ interface MarketDataState<T> {
 // --- Types ---
 export interface FxRates {
   fx_rates: Record<string, number>;
+  market_rates?: Record<string, number>;
+  official_rates?: Record<string, number>;
   crypto_rates_usd: Record<string, number>;
   crypto_rates_ngn: Record<string, number>;
   base_usd_rate: number;
+  official_rate?: number;
+  market_rate?: number;
+  parallel_rate?: number;
+  rate_comparison?: {
+    currency: string;
+    official: number | null;
+    market: number | null;
+    parallel: number | null;
+    spread: number | null;
+    spread_percent: number | null;
+    official_source: string | null;
+    market_source: string | null;
+    official_date: string | null;
+  };
+  highlight_headlines?: string[];
 }
 
 // --- Initial States ---
